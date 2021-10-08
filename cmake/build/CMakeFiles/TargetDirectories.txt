@@ -1,0 +1,4 @@
+/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/edit_cache.dir
+/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/rebuild_cache.dir
+/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/kv_client.dir
+/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/hw_grpc_proto.dir
