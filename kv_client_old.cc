@@ -1,6 +1,5 @@
 #include <string>
 #include <cstdio>
-#include <fstream>
 
 #include <grpcpp/grpcpp.h>
 
@@ -80,52 +79,78 @@ public:
 
 };
 
-
-int main(int argc, char* argv[]){
-
+void runGET(string key) {
 	string address("0.0.0.0:5000");
 	KVClient client(
 			grpc::CreateChannel(
 				address, 
 				grpc::InsecureChannelCredentials()
 				)
-);
+		       );
 
-	if(argc > 1){
-		cout<<"Batch Mode : "<<argv[1];
-		fstream newfile;
-		newfile.open(argv[1],ios::in);
-if (newfile.is_open()){  
-      string tp;
-      while(getline(newfile, tp)){ 
-         cout << tp << "\n"; 
-      }
-      newfile.close();
+	client.GET(key);
 }
-   
+
+void runPUT(string key,string value) {
+	string address("0.0.0.0:5000");
+	KVClient client(
+			grpc::CreateChannel(
+				address, 
+				grpc::InsecureChannelCredentials()
+				)
+		       );
+
+	client.PUT(key, value);
+}
+
+void runDEL(string key) {
+	string address("0.0.0.0:5000");
+	KVClient client(
+			grpc::CreateChannel(
+				address, 
+				grpc::InsecureChannelCredentials()
+				)
+		       );
+
+	client.DEL(key);
+}
+
+
+
+
+
+
+
+int main(int argc, char* argv[]){
+	runGET("5");
+	runPUT("3","1");
+	runDEL("5");
+	/*if(argc > 1){
+		cout<<”Batch Mode : ”<<argv[1];
 	}
 	else{
 		string cmd,key,value;
-		cout<<"Interactive Mode : ";
+		cout<<”Interactive Mode :  ”;
 		while(1){
-			cout<< "$>" ;
+			cout<< ”$>” ;
 			cin >> cmd;			
-			if(cmd.compare("GET")==0){
+			if(cmd.compare(“GET”)==0){
 				cin>>key;
-				client.GET(key);	
+				runGET(key);	
 			}
-			else if(cmd.compare("PUT")==0){
+			else if(cmd.compare(“PUT”)==0){
 				cin>>key;
 				cin>>value;
-				client.PUT(key,value);	
+				runPUT(key,value);	
 			}
-			else if(cmd.compare("DEL")==0){
+			else if(cmd.compare(“DEL”)==0){
 				cin>>key;
-				client.DEL(key);	
+				runDEL(key,value);	
 			}
 
 		}
-	}
+	}*/
 	return 0;
 }
+
 

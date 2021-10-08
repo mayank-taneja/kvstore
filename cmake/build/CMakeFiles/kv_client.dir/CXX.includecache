@@ -11,6 +11,8 @@ string
 -
 cstdio
 -
+fstream
+-
 grpcpp/grpcpp.h
 -
 kvstore.grpc.pb.h
