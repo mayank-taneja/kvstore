@@ -1,6 +1,7 @@
 #include <string>
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 
 #include <grpcpp/grpcpp.h>
 
@@ -89,19 +90,36 @@ int main(int argc, char* argv[]){
 				address, 
 				grpc::InsecureChannelCredentials()
 				)
-);
+	);
 
 	if(argc > 1){
 		cout<<"Batch Mode : "<<argv[1];
 		fstream newfile;
+		string a[3];
 		newfile.open(argv[1],ios::in);
-if (newfile.is_open()){  
-      string tp;
-      while(getline(newfile, tp)){ 
-         cout << tp << "\n"; 
-      }
-      newfile.close();
-}
+		if (newfile.is_open()){  
+			string tp;
+			while(getline(newfile, tp)){ 
+				cout << tp << "\n"; 
+				istringstream ss(tp);
+				string del;
+				int i=0;
+				while(getline(ss,del,' ')){
+					a[i]=del.c_str();    
+				}
+				if(a[0].compare("GET")==0){
+					client.GET(a[1]);    
+				}
+				else if(a[0].compare("PUT")==0){
+					client.PUT(a[1],a[2]);    
+				}
+				else if(a[0].compare("DEL")==0){
+					client.DEL(a[1]);    
+				}
+
+			}
+      			newfile.close();
+		}
    
 	}
 	else{
@@ -123,6 +141,9 @@ if (newfile.is_open()){
 				cin>>key;
 				client.DEL(key);	
 			}
+			else if(cmd.compare("EXIT")==0)
+                		break;
+
 
 		}
 	}
