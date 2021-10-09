@@ -1,4 +1,4 @@
-# Install script for directory: /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore
+# Install script for directory: /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

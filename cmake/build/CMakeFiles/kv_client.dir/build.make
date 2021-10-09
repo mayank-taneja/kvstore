@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore
+CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build
+CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/kv_client.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/kv_client.dir/flags.make
 
 CMakeFiles/kv_client.dir/kv_client.cc.o: CMakeFiles/kv_client.dir/flags.make
 CMakeFiles/kv_client.dir/kv_client.cc.o: ../../kv_client.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/kv_client.dir/kv_client.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/kv_client.dir/kv_client.cc.o -c /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/kv_client.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/kv_client.dir/kv_client.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/kv_client.dir/kv_client.cc.o -c /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/kv_client.cc
 
 CMakeFiles/kv_client.dir/kv_client.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/kv_client.dir/kv_client.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/kv_client.cc > CMakeFiles/kv_client.dir/kv_client.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/kv_client.cc > CMakeFiles/kv_client.dir/kv_client.cc.i
 
 CMakeFiles/kv_client.dir/kv_client.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/kv_client.dir/kv_client.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/kv_client.cc -o CMakeFiles/kv_client.dir/kv_client.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/kv_client.cc -o CMakeFiles/kv_client.dir/kv_client.cc.s
 
 # Object files for target kv_client
 kv_client_OBJECTS = \
@@ -80,50 +80,50 @@ kv_client_EXTERNAL_OBJECTS =
 kv_client: CMakeFiles/kv_client.dir/kv_client.cc.o
 kv_client: CMakeFiles/kv_client.dir/build.make
 kv_client: libhw_grpc_proto.a
-kv_client: /lib/libgrpc++_reflection.a
-kv_client: /lib/libgrpc++.a
-kv_client: /lib/libprotobuf.a
-kv_client: /lib/libgrpc.a
-kv_client: /lib/libz.a
-kv_client: /lib/libcares.a
-kv_client: /lib/libaddress_sorting.a
-kv_client: /lib/libre2.a
-kv_client: /lib/libabsl_hash.a
-kv_client: /lib/libabsl_city.a
-kv_client: /lib/libabsl_wyhash.a
-kv_client: /lib/libabsl_raw_hash_set.a
-kv_client: /lib/libabsl_hashtablez_sampler.a
-kv_client: /lib/libabsl_exponential_biased.a
-kv_client: /lib/libabsl_statusor.a
-kv_client: /lib/libabsl_bad_variant_access.a
-kv_client: /lib/libgpr.a
-kv_client: /lib/libupb.a
-kv_client: /lib/libabsl_status.a
-kv_client: /lib/libabsl_cord.a
-kv_client: /lib/libabsl_str_format_internal.a
-kv_client: /lib/libabsl_synchronization.a
-kv_client: /lib/libabsl_stacktrace.a
-kv_client: /lib/libabsl_symbolize.a
-kv_client: /lib/libabsl_debugging_internal.a
-kv_client: /lib/libabsl_demangle_internal.a
-kv_client: /lib/libabsl_graphcycles_internal.a
-kv_client: /lib/libabsl_malloc_internal.a
-kv_client: /lib/libabsl_time.a
-kv_client: /lib/libabsl_strings.a
-kv_client: /lib/libabsl_throw_delegate.a
-kv_client: /lib/libabsl_strings_internal.a
-kv_client: /lib/libabsl_base.a
-kv_client: /lib/libabsl_spinlock_wait.a
-kv_client: /lib/libabsl_int128.a
-kv_client: /lib/libabsl_civil_time.a
-kv_client: /lib/libabsl_time_zone.a
-kv_client: /lib/libabsl_bad_optional_access.a
-kv_client: /lib/libabsl_raw_logging_internal.a
-kv_client: /lib/libabsl_log_severity.a
-kv_client: /lib/libssl.a
-kv_client: /lib/libcrypto.a
+kv_client: /home/mayank/.local/lib/libgrpc++_reflection.a
+kv_client: /home/mayank/.local/lib/libgrpc++.a
+kv_client: /home/mayank/.local/lib/libprotobuf.a
+kv_client: /home/mayank/.local/lib/libgrpc.a
+kv_client: /home/mayank/.local/lib/libz.a
+kv_client: /home/mayank/.local/lib/libcares.a
+kv_client: /home/mayank/.local/lib/libaddress_sorting.a
+kv_client: /home/mayank/.local/lib/libre2.a
+kv_client: /home/mayank/.local/lib/libabsl_hash.a
+kv_client: /home/mayank/.local/lib/libabsl_city.a
+kv_client: /home/mayank/.local/lib/libabsl_wyhash.a
+kv_client: /home/mayank/.local/lib/libabsl_raw_hash_set.a
+kv_client: /home/mayank/.local/lib/libabsl_hashtablez_sampler.a
+kv_client: /home/mayank/.local/lib/libabsl_exponential_biased.a
+kv_client: /home/mayank/.local/lib/libabsl_statusor.a
+kv_client: /home/mayank/.local/lib/libabsl_bad_variant_access.a
+kv_client: /home/mayank/.local/lib/libgpr.a
+kv_client: /home/mayank/.local/lib/libupb.a
+kv_client: /home/mayank/.local/lib/libabsl_status.a
+kv_client: /home/mayank/.local/lib/libabsl_cord.a
+kv_client: /home/mayank/.local/lib/libabsl_str_format_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_synchronization.a
+kv_client: /home/mayank/.local/lib/libabsl_stacktrace.a
+kv_client: /home/mayank/.local/lib/libabsl_symbolize.a
+kv_client: /home/mayank/.local/lib/libabsl_debugging_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_demangle_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_graphcycles_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_malloc_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_time.a
+kv_client: /home/mayank/.local/lib/libabsl_strings.a
+kv_client: /home/mayank/.local/lib/libabsl_throw_delegate.a
+kv_client: /home/mayank/.local/lib/libabsl_strings_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_base.a
+kv_client: /home/mayank/.local/lib/libabsl_spinlock_wait.a
+kv_client: /home/mayank/.local/lib/libabsl_int128.a
+kv_client: /home/mayank/.local/lib/libabsl_civil_time.a
+kv_client: /home/mayank/.local/lib/libabsl_time_zone.a
+kv_client: /home/mayank/.local/lib/libabsl_bad_optional_access.a
+kv_client: /home/mayank/.local/lib/libabsl_raw_logging_internal.a
+kv_client: /home/mayank/.local/lib/libabsl_log_severity.a
+kv_client: /home/mayank/.local/lib/libssl.a
+kv_client: /home/mayank/.local/lib/libcrypto.a
 kv_client: CMakeFiles/kv_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable kv_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable kv_client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kv_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -136,6 +136,6 @@ CMakeFiles/kv_client.dir/clean:
 .PHONY : CMakeFiles/kv_client.dir/clean
 
 CMakeFiles/kv_client.dir/depend:
-	cd /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/kv_client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/kv_client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/kv_client.dir/depend
 

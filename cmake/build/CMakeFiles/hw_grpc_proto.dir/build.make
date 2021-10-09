@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore
+CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build
+CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/hw_grpc_proto.dir/depend.make
@@ -58,8 +58,8 @@ include CMakeFiles/hw_grpc_proto.dir/progress.make
 include CMakeFiles/hw_grpc_proto.dir/flags.make
 
 kvstore.pb.cc: ../../kvstore.proto
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating kvstore.pb.cc, kvstore.pb.h, kvstore.grpc.pb.cc, kvstore.grpc.pb.h"
-	/bin/protoc-3.15.8.0 --grpc_out /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build --cpp_out /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build -I /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore --plugin=protoc-gen-grpc="/bin/grpc_cpp_plugin" /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/kvstore.proto
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating kvstore.pb.cc, kvstore.pb.h, kvstore.grpc.pb.cc, kvstore.grpc.pb.h"
+	/home/mayank/.local/bin/protoc-3.17.3.0 --grpc_out /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build --cpp_out /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build -I /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore --plugin=protoc-gen-grpc="/home/mayank/.local/bin/grpc_cpp_plugin" /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/kvstore.proto
 
 kvstore.pb.h: kvstore.pb.cc
 	@$(CMAKE_COMMAND) -E touch_nocreate kvstore.pb.h
@@ -72,29 +72,29 @@ kvstore.grpc.pb.h: kvstore.pb.cc
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o: CMakeFiles/hw_grpc_proto.dir/flags.make
 CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o: kvstore.grpc.pb.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o -c /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o -c /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc > CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc > CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.i
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc -o CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.grpc.pb.cc -o CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.s
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o: CMakeFiles/hw_grpc_proto.dir/flags.make
 CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o: kvstore.pb.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o -c /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o -c /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc > CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc > CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.i
 
 CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc -o CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/kvstore.pb.cc -o CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.s
 
 # Object files for target hw_grpc_proto
 hw_grpc_proto_OBJECTS = \
@@ -108,7 +108,7 @@ libhw_grpc_proto.a: CMakeFiles/hw_grpc_proto.dir/kvstore.grpc.pb.cc.o
 libhw_grpc_proto.a: CMakeFiles/hw_grpc_proto.dir/kvstore.pb.cc.o
 libhw_grpc_proto.a: CMakeFiles/hw_grpc_proto.dir/build.make
 libhw_grpc_proto.a: CMakeFiles/hw_grpc_proto.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libhw_grpc_proto.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libhw_grpc_proto.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/hw_grpc_proto.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/hw_grpc_proto.dir/link.txt --verbose=$(VERBOSE)
 
@@ -125,6 +125,6 @@ CMakeFiles/hw_grpc_proto.dir/depend: kvstore.pb.cc
 CMakeFiles/hw_grpc_proto.dir/depend: kvstore.pb.h
 CMakeFiles/hw_grpc_proto.dir/depend: kvstore.grpc.pb.cc
 CMakeFiles/hw_grpc_proto.dir/depend: kvstore.grpc.pb.h
-	cd /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/hw_grpc_proto.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/hw_grpc_proto.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/hw_grpc_proto.dir/depend
 

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore
+CMAKE_SOURCE_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build
+CMAKE_BINARY_DIR = /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -124,6 +124,19 @@ kv_client/fast:
 .PHONY : kv_client/fast
 
 #=============================================================================
+# Target rules for targets named kv_server
+
+# Build rule for target.
+kv_server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 kv_server
+.PHONY : kv_server
+
+# fast build rule for target.
+kv_server/fast:
+	$(MAKE) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/build
+.PHONY : kv_server/fast
+
+#=============================================================================
 # Target rules for targets named hw_grpc_proto
 
 # Build rule for target.
@@ -162,6 +175,33 @@ kv_client.s: kv_client.cc.s
 kv_client.cc.s:
 	$(MAKE) -f CMakeFiles/kv_client.dir/build.make CMakeFiles/kv_client.dir/kv_client.cc.s
 .PHONY : kv_client.cc.s
+
+kv_server.o: kv_server.cc.o
+
+.PHONY : kv_server.o
+
+# target to build an object file
+kv_server.cc.o:
+	$(MAKE) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/kv_server.cc.o
+.PHONY : kv_server.cc.o
+
+kv_server.i: kv_server.cc.i
+
+.PHONY : kv_server.i
+
+# target to preprocess a source file
+kv_server.cc.i:
+	$(MAKE) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/kv_server.cc.i
+.PHONY : kv_server.cc.i
+
+kv_server.s: kv_server.cc.s
+
+.PHONY : kv_server.s
+
+# target to generate assembly for a file
+kv_server.cc.s:
+	$(MAKE) -f CMakeFiles/kv_server.dir/build.make CMakeFiles/kv_server.dir/kv_server.cc.s
+.PHONY : kv_server.cc.s
 
 kvstore.grpc.pb.o: kvstore.grpc.pb.cc.o
 
@@ -226,10 +266,14 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kv_client"
+	@echo "... kv_server"
 	@echo "... hw_grpc_proto"
 	@echo "... kv_client.o"
 	@echo "... kv_client.i"
 	@echo "... kv_client.s"
+	@echo "... kv_server.o"
+	@echo "... kv_server.i"
+	@echo "... kv_server.s"
 	@echo "... kvstore.grpc.pb.o"
 	@echo "... kvstore.grpc.pb.i"
 	@echo "... kvstore.grpc.pb.s"

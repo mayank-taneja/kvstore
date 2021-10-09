@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = -DCARES_STATICLIB
 
-CXX_INCLUDES = -I/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build -isystem /include 
+CXX_INCLUDES = -I/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build -isystem /home/mayank/.local/include 
 

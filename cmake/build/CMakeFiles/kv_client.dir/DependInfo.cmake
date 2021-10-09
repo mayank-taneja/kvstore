@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/kv_client.cc" "/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/kv_client.dir/kv_client.cc.o"
+  "/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/kv_client.cc" "/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/kv_client.dir/kv_client.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -16,12 +16,12 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "."
-  "/include"
+  "/home/mayank/.local/include"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/mayank/Documents/CS744/Assignment-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/hw_grpc_proto.dir/DependInfo.cmake"
+  "/home/mayank/Documents/CS744/Assign-4/grpc/examples/cpp/kvstore/cmake/build/CMakeFiles/hw_grpc_proto.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
