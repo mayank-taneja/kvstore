@@ -105,7 +105,8 @@ int main(int argc, char* argv[]){
 				string del;
 				int i=0;
 				while(getline(ss,del,' ')){
-					a[i]=del.c_str();    
+					a[i]=del.c_str();  
+					i++;
 				}
 				if(a[0].compare("GET")==0){
 					client.GET(a[1]);    
