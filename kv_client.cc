@@ -95,12 +95,12 @@ int main(int argc, char* argv[]){
 	if(argc > 1){
 		cout<<"Batch Mode : "<<argv[1];
 		fstream newfile;
-		string a[3];
 		newfile.open(argv[1],ios::in);
 		if (newfile.is_open()){  
 			string tp;
 			while(getline(newfile, tp)){ 
 				cout << tp << "\n"; 
+				string a[3];
 				istringstream ss(tp);
 				string del;
 				int i=0;
