@@ -28,6 +28,7 @@ using kvstore::DeleteReply;
 unordered_map<string, string> cache;
 
 string get_value_from_map(string key) {
+  cout << "Key = " << key;
   for (auto i: cache) {
     if (key.compare(i.first) == 0) {
       return i.second;
@@ -56,6 +57,7 @@ class KVStoreServiceImpl final : public KVStore::Service {
   Status GET(ServerContext* context,
                    const GetRequest *request, GetReply *response) override  {
     string key = request->key();
+    cout << "Key = " << key;
     string value = get_value_from_map(key);
     if(value.compare("") == 0) {
         response->set_status(400);
@@ -69,11 +71,11 @@ class KVStoreServiceImpl final : public KVStore::Service {
   }
 
 Status PUT(ServerContext* context,
-                   const PutRequest *request, PutReply *respone) override {
+                   const PutRequest *request, PutReply *response) override {
     string key = request->key();
     string value = request->value();
-    put_value(request.key(), request.value());
-    response.set_status(200);
+    put_value(key, value);
+    response->set_status(200);
     
     return Status::OK;
   }
@@ -92,7 +94,6 @@ Status DEL(ServerContext* context,
     
     return Status::OK;
   }
-
 };
 
 void RunServer() {
