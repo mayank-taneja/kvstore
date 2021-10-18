@@ -26,17 +26,19 @@ using kvstore::PutReply;
 using kvstore::PutRequest;
 
 unordered_map<string, string> cache;
-int cache_size=3;
+int cache_size = 3;
 deque<string> lruqueue;
+unordered_map<string, int> lfumap;
 string cache_type = "LRU";
 
-
-int hashString(string s){
-    int sum=0;
-    for(int i=0;i<s.length();i++){
-        sum+=s[i];
+int hashString(string s)
+{
+    int sum = 0;
+    for (int i = 0; i < s.length(); i++)
+    {
+        sum += s[i];
     }
-    return sum%20;
+    return sum % 20;
 }
 
 string get_value_from_map(string key)
@@ -44,25 +46,34 @@ string get_value_from_map(string key)
 
     if (cache_type.compare("LRU") == 0)
     {
-        cout << "Key = " << key;
-        for (auto i : cache)
-        {
-            if (key.compare(i.first) == 0)
-            {
-                // found
-                deque<string>::iterator it = lruqueue.begin();
-                while (*it != key)
-                {
-                    it++;
-                }
 
-                // update queue: update it to most recent used value
-                lruqueue.erase(it);
-                lruqueue.push_front(key);
-                return i.second;
-            }
+        if (cache.find(key) == cache.end())
+            return "";
+        else
+        {
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+            lruqueue.erase(iter);
+            lruqueue.push_front(key);
+            return cache[key];
         }
-        return "";
+    }
+
+    if (cache_type.compare("LFU") == 0)
+    {
+        if (cache.find(key) == cache.end())
+            return "";
+        else
+        {
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+            lruqueue.erase(iter);
+            lruqueue.push_front(key);
+            lfumap[key] = lfumap[key] + 1;
+            return cache[key];
+        }
     }
 
     return "";
@@ -73,31 +84,69 @@ void put_value(string key, string value)
     if (cache_type.compare("LRU") == 0)
     {
 
-        // not present in cache
-        if (cache.find(key) == cache.end())
+        if (cache.find(key) == cache.end()) // if key is not present in cache
         {
-            // check if cache is full
-            if (cache_size == lruqueue.size())
+            if (cache_size == lruqueue.size()) //  if cache size is full pop the last entry of cache
             {
                 string last = lruqueue.back();
                 lruqueue.pop_back();
                 cache.erase(last);
             }
         }
-        else
+        else // else if key is in lru queue remove it and add it again in the front
         {
-            // present in cache, remove it from queue and map
-            deque<string>::iterator it = lruqueue.begin();
-            while (*it != key)
-                it++;
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
 
-            lruqueue.erase(it);
+            lruqueue.erase(iter);
             cache.erase(key);
         }
 
-        // update the cache
         lruqueue.push_front(key);
         cache[key] = value;
+    }
+
+    if (cache_type.compare("LFU") == 0)
+    {
+
+        if (cache.find(key) == cache.end()) // if key is not present in cache
+        {
+            if (cache_size == lruqueue.size()) //  if cache size is full pop the least frequent entry from cache
+            {
+                int minfreq = 9999;
+                for (auto i : lfumap)
+                {
+                    if (i.second < minfreq)
+                        minfreq = i.second;
+                }
+                auto iter = lruqueue.rbegin();
+                for (; iter != lruqueue.rend(); ++iter)
+                    if (lfumap[*iter] == minfreq)
+                        break;
+                deque<string>::iterator it = lruqueue.begin();
+                while (*it != *iter)
+                    it++;
+                lruqueue.erase(it);
+                cache.erase(*iter);
+                lfumap.erase(*iter);
+            }
+
+            lruqueue.push_front(key);
+            cache[key] = value;
+            lfumap[key] = 0;
+        }
+        else // else if key is in cache increment frequency
+        {
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+            lruqueue.erase(iter);
+            lruqueue.push_front(key);
+
+            cache[key] = value;
+            lfumap[key] += 1;
+        }
     }
 }
 
@@ -105,22 +154,34 @@ int delete_key(string key)
 {
     if (cache_type.compare("LRU") == 0)
     {
-        for (auto i : cache)
+        if (cache.find(key) == cache.end())
+            return 0;
+        else
         {
-            if (key.compare(i.first) == 0)
-            {
-                cache.erase(key);
+            cache.erase(key);
             deque<string>::iterator it = lruqueue.begin();
             while (*it != key)
                 it++;
-                lruqueue.erase(it);
-            
-                return 1; // success
-            }
+            lruqueue.erase(it);
+            return 1; // success
         }
-        return 0; // key not found
     }
 
+    if (cache_type.compare("LFU") == 0)
+    {
+        if (cache.find(key) == cache.end())
+            return 0;
+        else
+        {
+            cache.erase(key);
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+            lruqueue.erase(iter);
+            lfumap.erase(key);
+            return 1; // success
+        }
+    }
     return 0;
 }
 
@@ -142,6 +203,8 @@ class KVStoreServiceImpl final : public KVStore::Service
         {
             response->set_status(200);
             response->set_value(value);
+            response->set_errordescription("RETRIEVED VALUE");
+
         }
 
         return Status::OK;
@@ -154,7 +217,7 @@ class KVStoreServiceImpl final : public KVStore::Service
         string value = request->value();
         put_value(key, value);
         response->set_status(200);
-
+        response->set_errordescription("PUT SUCCESFULL");
         return Status::OK;
     }
 
@@ -171,6 +234,8 @@ class KVStoreServiceImpl final : public KVStore::Service
         else
         {
             response->set_status(200);
+            response->set_errordescription("KEY DELETED");
+
         }
 
         return Status::OK;
