@@ -39,69 +39,69 @@ KVStore::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, c
   , rpcmethod_DEL_(KVStore_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status KVStore::Stub::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::kvstore::GetReply* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::kvstore::GetRequest, ::kvstore::GetReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GET_, context, request, response);
+::grpc::Status KVStore::Stub::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::kvstore::CommonReply* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::kvstore::GetRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GET_, context, request, response);
 }
 
-void KVStore::Stub::async::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest* request, ::kvstore::GetReply* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::kvstore::GetRequest, ::kvstore::GetReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GET_, context, request, response, std::move(f));
+void KVStore::Stub::async::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest* request, ::kvstore::CommonReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::kvstore::GetRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GET_, context, request, response, std::move(f));
 }
 
-void KVStore::Stub::async::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest* request, ::kvstore::GetReply* response, ::grpc::ClientUnaryReactor* reactor) {
+void KVStore::Stub::async::GET(::grpc::ClientContext* context, const ::kvstore::GetRequest* request, ::kvstore::CommonReply* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GET_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::GetReply>* KVStore::Stub::PrepareAsyncGETRaw(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::GetReply, ::kvstore::GetRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GET_, context, request);
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::PrepareAsyncGETRaw(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::CommonReply, ::kvstore::GetRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GET_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::GetReply>* KVStore::Stub::AsyncGETRaw(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::AsyncGETRaw(::grpc::ClientContext* context, const ::kvstore::GetRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncGETRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status KVStore::Stub::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::kvstore::PutReply* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::kvstore::PutRequest, ::kvstore::PutReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PUT_, context, request, response);
+::grpc::Status KVStore::Stub::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::kvstore::CommonReply* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::kvstore::PutRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_PUT_, context, request, response);
 }
 
-void KVStore::Stub::async::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest* request, ::kvstore::PutReply* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::kvstore::PutRequest, ::kvstore::PutReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PUT_, context, request, response, std::move(f));
+void KVStore::Stub::async::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest* request, ::kvstore::CommonReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::kvstore::PutRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PUT_, context, request, response, std::move(f));
 }
 
-void KVStore::Stub::async::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest* request, ::kvstore::PutReply* response, ::grpc::ClientUnaryReactor* reactor) {
+void KVStore::Stub::async::PUT(::grpc::ClientContext* context, const ::kvstore::PutRequest* request, ::kvstore::CommonReply* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_PUT_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::PutReply>* KVStore::Stub::PrepareAsyncPUTRaw(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::PutReply, ::kvstore::PutRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PUT_, context, request);
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::PrepareAsyncPUTRaw(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::CommonReply, ::kvstore::PutRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_PUT_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::PutReply>* KVStore::Stub::AsyncPUTRaw(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::AsyncPUTRaw(::grpc::ClientContext* context, const ::kvstore::PutRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncPUTRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status KVStore::Stub::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::kvstore::DeleteReply* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::kvstore::DeleteRequest, ::kvstore::DeleteReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DEL_, context, request, response);
+::grpc::Status KVStore::Stub::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::kvstore::CommonReply* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::kvstore::DeleteRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DEL_, context, request, response);
 }
 
-void KVStore::Stub::async::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::DeleteReply* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::kvstore::DeleteRequest, ::kvstore::DeleteReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DEL_, context, request, response, std::move(f));
+void KVStore::Stub::async::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::CommonReply* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::kvstore::DeleteRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DEL_, context, request, response, std::move(f));
 }
 
-void KVStore::Stub::async::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::DeleteReply* response, ::grpc::ClientUnaryReactor* reactor) {
+void KVStore::Stub::async::DEL(::grpc::ClientContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::CommonReply* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DEL_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::DeleteReply>* KVStore::Stub::PrepareAsyncDELRaw(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::DeleteReply, ::kvstore::DeleteRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DEL_, context, request);
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::PrepareAsyncDELRaw(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::kvstore::CommonReply, ::kvstore::DeleteRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DEL_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::kvstore::DeleteReply>* KVStore::Stub::AsyncDELRaw(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::kvstore::CommonReply>* KVStore::Stub::AsyncDELRaw(::grpc::ClientContext* context, const ::kvstore::DeleteRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncDELRaw(context, request, cq);
   result->StartCall();
@@ -112,31 +112,31 @@ KVStore::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       KVStore_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::GetRequest, ::kvstore::GetReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::GetRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](KVStore::Service* service,
              ::grpc::ServerContext* ctx,
              const ::kvstore::GetRequest* req,
-             ::kvstore::GetReply* resp) {
+             ::kvstore::CommonReply* resp) {
                return service->GET(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       KVStore_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::PutRequest, ::kvstore::PutReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::PutRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](KVStore::Service* service,
              ::grpc::ServerContext* ctx,
              const ::kvstore::PutRequest* req,
-             ::kvstore::PutReply* resp) {
+             ::kvstore::CommonReply* resp) {
                return service->PUT(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       KVStore_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::DeleteRequest, ::kvstore::DeleteReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< KVStore::Service, ::kvstore::DeleteRequest, ::kvstore::CommonReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](KVStore::Service* service,
              ::grpc::ServerContext* ctx,
              const ::kvstore::DeleteRequest* req,
-             ::kvstore::DeleteReply* resp) {
+             ::kvstore::CommonReply* resp) {
                return service->DEL(ctx, req, resp);
              }, this)));
 }
@@ -144,21 +144,21 @@ KVStore::Service::Service() {
 KVStore::Service::~Service() {
 }
 
-::grpc::Status KVStore::Service::GET(::grpc::ServerContext* context, const ::kvstore::GetRequest* request, ::kvstore::GetReply* response) {
+::grpc::Status KVStore::Service::GET(::grpc::ServerContext* context, const ::kvstore::GetRequest* request, ::kvstore::CommonReply* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status KVStore::Service::PUT(::grpc::ServerContext* context, const ::kvstore::PutRequest* request, ::kvstore::PutReply* response) {
+::grpc::Status KVStore::Service::PUT(::grpc::ServerContext* context, const ::kvstore::PutRequest* request, ::kvstore::CommonReply* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status KVStore::Service::DEL(::grpc::ServerContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::DeleteReply* response) {
+::grpc::Status KVStore::Service::DEL(::grpc::ServerContext* context, const ::kvstore::DeleteRequest* request, ::kvstore::CommonReply* response) {
   (void) context;
   (void) request;
   (void) response;

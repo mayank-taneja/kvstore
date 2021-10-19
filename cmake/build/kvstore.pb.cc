@@ -29,20 +29,20 @@ struct GetRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetRequestDefaultTypeInternal _GetRequest_default_instance_;
-constexpr GetReply::GetReply(
+constexpr CommonReply::CommonReply(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : value_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , errordescription_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , status_(0){}
-struct GetReplyDefaultTypeInternal {
-  constexpr GetReplyDefaultTypeInternal()
+struct CommonReplyDefaultTypeInternal {
+  constexpr CommonReplyDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~GetReplyDefaultTypeInternal() {}
+  ~CommonReplyDefaultTypeInternal() {}
   union {
-    GetReply _instance;
+    CommonReply _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT GetReplyDefaultTypeInternal _GetReply_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CommonReplyDefaultTypeInternal _CommonReply_default_instance_;
 constexpr PutRequest::PutRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : key_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -107,13 +107,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_kvstore_2eproto::offsets[] PRO
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::kvstore::GetRequest, key_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::kvstore::GetReply, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::kvstore::CommonReply, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::kvstore::GetReply, value_),
-  PROTOBUF_FIELD_OFFSET(::kvstore::GetReply, status_),
-  PROTOBUF_FIELD_OFFSET(::kvstore::GetReply, errordescription_),
+  PROTOBUF_FIELD_OFFSET(::kvstore::CommonReply, value_),
+  PROTOBUF_FIELD_OFFSET(::kvstore::CommonReply, status_),
+  PROTOBUF_FIELD_OFFSET(::kvstore::CommonReply, errordescription_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::kvstore::PutRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -144,7 +144,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_kvstore_2eproto::offsets[] PRO
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::kvstore::GetRequest)},
-  { 6, -1, sizeof(::kvstore::GetReply)},
+  { 6, -1, sizeof(::kvstore::CommonReply)},
   { 14, -1, sizeof(::kvstore::PutRequest)},
   { 21, -1, sizeof(::kvstore::PutReply)},
   { 28, -1, sizeof(::kvstore::DeleteRequest)},
@@ -153,7 +153,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_GetRequest_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_GetReply_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_CommonReply_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_PutRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_PutReply_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::kvstore::_DeleteRequest_default_instance_),
@@ -162,21 +162,22 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_kvstore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\rkvstore.proto\022\007kvstore\"\031\n\nGetRequest\022\013"
-  "\n\003key\030\001 \001(\t\"C\n\010GetReply\022\r\n\005value\030\001 \001(\t\022\016"
-  "\n\006status\030\002 \001(\005\022\030\n\020errorDescription\030\003 \001(\t"
-  "\"(\n\nPutRequest\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001"
-  "(\t\"4\n\010PutReply\022\016\n\006status\030\001 \001(\005\022\030\n\020errorD"
-  "escription\030\002 \001(\t\"\034\n\rDeleteRequest\022\013\n\003key"
-  "\030\001 \001(\t\"7\n\013DeleteReply\022\016\n\006status\030\001 \001(\005\022\030\n"
-  "\020errorDescription\030\002 \001(\t2\242\001\n\007KVStore\022/\n\003G"
-  "ET\022\023.kvstore.GetRequest\032\021.kvstore.GetRep"
-  "ly\"\000\022/\n\003PUT\022\023.kvstore.PutRequest\032\021.kvsto"
-  "re.PutReply\"\000\0225\n\003DEL\022\026.kvstore.DeleteReq"
-  "uest\032\024.kvstore.DeleteReply\"\000b\006proto3"
+  "\n\003key\030\001 \001(\t\"F\n\013CommonReply\022\r\n\005value\030\001 \001("
+  "\t\022\016\n\006status\030\002 \001(\005\022\030\n\020errorDescription\030\003 "
+  "\001(\t\"(\n\nPutRequest\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030"
+  "\002 \001(\t\"4\n\010PutReply\022\016\n\006status\030\001 \001(\005\022\030\n\020err"
+  "orDescription\030\002 \001(\t\"\034\n\rDeleteRequest\022\013\n\003"
+  "key\030\001 \001(\t\"7\n\013DeleteReply\022\016\n\006status\030\001 \001(\005"
+  "\022\030\n\020errorDescription\030\002 \001(\t2\250\001\n\007KVStore\0222"
+  "\n\003GET\022\023.kvstore.GetRequest\032\024.kvstore.Com"
+  "monReply\"\000\0222\n\003PUT\022\023.kvstore.PutRequest\032\024"
+  ".kvstore.CommonReply\"\000\0225\n\003DEL\022\026.kvstore."
+  "DeleteRequest\032\024.kvstore.CommonReply\"\000b\006p"
+  "roto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_kvstore_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_kvstore_2eproto = {
-  false, false, 476, descriptor_table_protodef_kvstore_2eproto, "kvstore.proto", 
+  false, false, 485, descriptor_table_protodef_kvstore_2eproto, "kvstore.proto", 
   &descriptor_table_kvstore_2eproto_once, nullptr, 0, 6,
   schemas, file_default_instances, TableStruct_kvstore_2eproto::offsets,
   file_level_metadata_kvstore_2eproto, file_level_enum_descriptors_kvstore_2eproto, file_level_service_descriptors_kvstore_2eproto,
@@ -391,20 +392,20 @@ void GetRequest::InternalSwap(GetRequest* other) {
 
 // ===================================================================
 
-class GetReply::_Internal {
+class CommonReply::_Internal {
  public:
 };
 
-GetReply::GetReply(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+CommonReply::CommonReply(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
   }
-  // @@protoc_insertion_point(arena_constructor:kvstore.GetReply)
+  // @@protoc_insertion_point(arena_constructor:kvstore.CommonReply)
 }
-GetReply::GetReply(const GetReply& from)
+CommonReply::CommonReply(const CommonReply& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -418,40 +419,40 @@ GetReply::GetReply(const GetReply& from)
       GetArenaForAllocation());
   }
   status_ = from.status_;
-  // @@protoc_insertion_point(copy_constructor:kvstore.GetReply)
+  // @@protoc_insertion_point(copy_constructor:kvstore.CommonReply)
 }
 
-inline void GetReply::SharedCtor() {
+inline void CommonReply::SharedCtor() {
 value_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 errordescription_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 status_ = 0;
 }
 
-GetReply::~GetReply() {
-  // @@protoc_insertion_point(destructor:kvstore.GetReply)
+CommonReply::~CommonReply() {
+  // @@protoc_insertion_point(destructor:kvstore.CommonReply)
   if (GetArenaForAllocation() != nullptr) return;
   SharedDtor();
   _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-inline void GetReply::SharedDtor() {
+inline void CommonReply::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   value_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   errordescription_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
-void GetReply::ArenaDtor(void* object) {
-  GetReply* _this = reinterpret_cast< GetReply* >(object);
+void CommonReply::ArenaDtor(void* object) {
+  CommonReply* _this = reinterpret_cast< CommonReply* >(object);
   (void)_this;
 }
-void GetReply::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+void CommonReply::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
-void GetReply::SetCachedSize(int size) const {
+void CommonReply::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
 
-void GetReply::Clear() {
-// @@protoc_insertion_point(message_clear_start:kvstore.GetReply)
+void CommonReply::Clear() {
+// @@protoc_insertion_point(message_clear_start:kvstore.CommonReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -462,7 +463,7 @@ void GetReply::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* GetReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* CommonReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
@@ -473,7 +474,7 @@ const char* GetReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_value();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "kvstore.GetReply.value"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "kvstore.CommonReply.value"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -489,7 +490,7 @@ const char* GetReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_errordescription();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "kvstore.GetReply.errorDescription"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "kvstore.CommonReply.errorDescription"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -516,9 +517,9 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* GetReply::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* CommonReply::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:kvstore.GetReply)
+  // @@protoc_insertion_point(serialize_to_array_start:kvstore.CommonReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -527,7 +528,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_value().data(), static_cast<int>(this->_internal_value().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "kvstore.GetReply.value");
+      "kvstore.CommonReply.value");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_value(), target);
   }
@@ -543,7 +544,7 @@ failure:
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_errordescription().data(), static_cast<int>(this->_internal_errordescription().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "kvstore.GetReply.errorDescription");
+      "kvstore.CommonReply.errorDescription");
     target = stream->WriteStringMaybeAliased(
         3, this->_internal_errordescription(), target);
   }
@@ -552,12 +553,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:kvstore.GetReply)
+  // @@protoc_insertion_point(serialize_to_array_end:kvstore.CommonReply)
   return target;
 }
 
-size_t GetReply::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:kvstore.GetReply)
+size_t CommonReply::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:kvstore.CommonReply)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -594,21 +595,21 @@ size_t GetReply::ByteSizeLong() const {
   return total_size;
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetReply::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CommonReply::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    GetReply::MergeImpl
+    CommonReply::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetReply::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CommonReply::GetClassData() const { return &_class_data_; }
 
-void GetReply::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
+void CommonReply::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to,
                       const ::PROTOBUF_NAMESPACE_ID::Message&from) {
-  static_cast<GetReply *>(to)->MergeFrom(
-      static_cast<const GetReply &>(from));
+  static_cast<CommonReply *>(to)->MergeFrom(
+      static_cast<const CommonReply &>(from));
 }
 
 
-void GetReply::MergeFrom(const GetReply& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:kvstore.GetReply)
+void CommonReply::MergeFrom(const CommonReply& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:kvstore.CommonReply)
   GOOGLE_DCHECK_NE(&from, this);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
@@ -625,18 +626,18 @@ void GetReply::MergeFrom(const GetReply& from) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GetReply::CopyFrom(const GetReply& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:kvstore.GetReply)
+void CommonReply::CopyFrom(const CommonReply& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:kvstore.CommonReply)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetReply::IsInitialized() const {
+bool CommonReply::IsInitialized() const {
   return true;
 }
 
-void GetReply::InternalSwap(GetReply* other) {
+void CommonReply::InternalSwap(CommonReply* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
@@ -652,7 +653,7 @@ void GetReply::InternalSwap(GetReply* other) {
   swap(status_, other->status_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GetReply::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata CommonReply::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_kvstore_2eproto_getter, &descriptor_table_kvstore_2eproto_once,
       file_level_metadata_kvstore_2eproto[1]);
@@ -1560,8 +1561,8 @@ PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::kvstore::GetRequest* Arena::CreateMaybeMessage< ::kvstore::GetRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::kvstore::GetRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::kvstore::GetReply* Arena::CreateMaybeMessage< ::kvstore::GetReply >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::kvstore::GetReply >(arena);
+template<> PROTOBUF_NOINLINE ::kvstore::CommonReply* Arena::CreateMaybeMessage< ::kvstore::CommonReply >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::kvstore::CommonReply >(arena);
 }
 template<> PROTOBUF_NOINLINE ::kvstore::PutRequest* Arena::CreateMaybeMessage< ::kvstore::PutRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::kvstore::PutRequest >(arena);

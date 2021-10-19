@@ -54,15 +54,15 @@ struct TableStruct_kvstore_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_kvstore_2eproto;
 namespace kvstore {
+class CommonReply;
+struct CommonReplyDefaultTypeInternal;
+extern CommonReplyDefaultTypeInternal _CommonReply_default_instance_;
 class DeleteReply;
 struct DeleteReplyDefaultTypeInternal;
 extern DeleteReplyDefaultTypeInternal _DeleteReply_default_instance_;
 class DeleteRequest;
 struct DeleteRequestDefaultTypeInternal;
 extern DeleteRequestDefaultTypeInternal _DeleteRequest_default_instance_;
-class GetReply;
-struct GetReplyDefaultTypeInternal;
-extern GetReplyDefaultTypeInternal _GetReply_default_instance_;
 class GetRequest;
 struct GetRequestDefaultTypeInternal;
 extern GetRequestDefaultTypeInternal _GetRequest_default_instance_;
@@ -74,9 +74,9 @@ struct PutRequestDefaultTypeInternal;
 extern PutRequestDefaultTypeInternal _PutRequest_default_instance_;
 }  // namespace kvstore
 PROTOBUF_NAMESPACE_OPEN
+template<> ::kvstore::CommonReply* Arena::CreateMaybeMessage<::kvstore::CommonReply>(Arena*);
 template<> ::kvstore::DeleteReply* Arena::CreateMaybeMessage<::kvstore::DeleteReply>(Arena*);
 template<> ::kvstore::DeleteRequest* Arena::CreateMaybeMessage<::kvstore::DeleteRequest>(Arena*);
-template<> ::kvstore::GetReply* Arena::CreateMaybeMessage<::kvstore::GetReply>(Arena*);
 template<> ::kvstore::GetRequest* Arena::CreateMaybeMessage<::kvstore::GetRequest>(Arena*);
 template<> ::kvstore::PutReply* Arena::CreateMaybeMessage<::kvstore::PutReply>(Arena*);
 template<> ::kvstore::PutRequest* Arena::CreateMaybeMessage<::kvstore::PutRequest>(Arena*);
@@ -229,24 +229,24 @@ class GetRequest final :
 };
 // -------------------------------------------------------------------
 
-class GetReply final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:kvstore.GetReply) */ {
+class CommonReply final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:kvstore.CommonReply) */ {
  public:
-  inline GetReply() : GetReply(nullptr) {}
-  ~GetReply() override;
-  explicit constexpr GetReply(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline CommonReply() : CommonReply(nullptr) {}
+  ~CommonReply() override;
+  explicit constexpr CommonReply(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  GetReply(const GetReply& from);
-  GetReply(GetReply&& from) noexcept
-    : GetReply() {
+  CommonReply(const CommonReply& from);
+  CommonReply(CommonReply&& from) noexcept
+    : CommonReply() {
     *this = ::std::move(from);
   }
 
-  inline GetReply& operator=(const GetReply& from) {
+  inline CommonReply& operator=(const CommonReply& from) {
     CopyFrom(from);
     return *this;
   }
-  inline GetReply& operator=(GetReply&& from) noexcept {
+  inline CommonReply& operator=(CommonReply&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()) {
       InternalSwap(&from);
@@ -265,20 +265,20 @@ class GetReply final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const GetReply& default_instance() {
+  static const CommonReply& default_instance() {
     return *internal_default_instance();
   }
-  static inline const GetReply* internal_default_instance() {
-    return reinterpret_cast<const GetReply*>(
-               &_GetReply_default_instance_);
+  static inline const CommonReply* internal_default_instance() {
+    return reinterpret_cast<const CommonReply*>(
+               &_CommonReply_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(GetReply& a, GetReply& b) {
+  friend void swap(CommonReply& a, CommonReply& b) {
     a.Swap(&b);
   }
-  inline void Swap(GetReply* other) {
+  inline void Swap(CommonReply* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -286,7 +286,7 @@ class GetReply final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(GetReply* other) {
+  void UnsafeArenaSwap(CommonReply* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -294,17 +294,17 @@ class GetReply final :
 
   // implements Message ----------------------------------------------
 
-  inline GetReply* New() const final {
-    return new GetReply();
+  inline CommonReply* New() const final {
+    return new CommonReply();
   }
 
-  GetReply* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<GetReply>(arena);
+  CommonReply* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CommonReply>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const GetReply& from);
+  void CopyFrom(const CommonReply& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const GetReply& from);
+  void MergeFrom(const CommonReply& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message*to, const ::PROTOBUF_NAMESPACE_ID::Message&from);
   public:
@@ -321,13 +321,13 @@ class GetReply final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(GetReply* other);
+  void InternalSwap(CommonReply* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "kvstore.GetReply";
+    return "kvstore.CommonReply";
   }
   protected:
-  explicit GetReply(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit CommonReply(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -385,7 +385,7 @@ class GetReply final :
   void _internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // @@protoc_insertion_point(class_scope:kvstore.GetReply)
+  // @@protoc_insertion_point(class_scope:kvstore.CommonReply)
  private:
   class _Internal;
 
@@ -1071,44 +1071,44 @@ inline void GetRequest::set_allocated_key(std::string* key) {
 
 // -------------------------------------------------------------------
 
-// GetReply
+// CommonReply
 
 // string value = 1;
-inline void GetReply::clear_value() {
+inline void CommonReply::clear_value() {
   value_.ClearToEmpty();
 }
-inline const std::string& GetReply::value() const {
-  // @@protoc_insertion_point(field_get:kvstore.GetReply.value)
+inline const std::string& CommonReply::value() const {
+  // @@protoc_insertion_point(field_get:kvstore.CommonReply.value)
   return _internal_value();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void GetReply::set_value(ArgT0&& arg0, ArgT... args) {
+void CommonReply::set_value(ArgT0&& arg0, ArgT... args) {
  
  value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:kvstore.GetReply.value)
+  // @@protoc_insertion_point(field_set:kvstore.CommonReply.value)
 }
-inline std::string* GetReply::mutable_value() {
+inline std::string* CommonReply::mutable_value() {
   std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:kvstore.GetReply.value)
+  // @@protoc_insertion_point(field_mutable:kvstore.CommonReply.value)
   return _s;
 }
-inline const std::string& GetReply::_internal_value() const {
+inline const std::string& CommonReply::_internal_value() const {
   return value_.Get();
 }
-inline void GetReply::_internal_set_value(const std::string& value) {
+inline void CommonReply::_internal_set_value(const std::string& value) {
   
   value_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* GetReply::_internal_mutable_value() {
+inline std::string* CommonReply::_internal_mutable_value() {
   
   return value_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* GetReply::release_value() {
-  // @@protoc_insertion_point(field_release:kvstore.GetReply.value)
+inline std::string* CommonReply::release_value() {
+  // @@protoc_insertion_point(field_release:kvstore.CommonReply.value)
   return value_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void GetReply::set_allocated_value(std::string* value) {
+inline void CommonReply::set_allocated_value(std::string* value) {
   if (value != nullptr) {
     
   } else {
@@ -1116,65 +1116,65 @@ inline void GetReply::set_allocated_value(std::string* value) {
   }
   value_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:kvstore.GetReply.value)
+  // @@protoc_insertion_point(field_set_allocated:kvstore.CommonReply.value)
 }
 
 // int32 status = 2;
-inline void GetReply::clear_status() {
+inline void CommonReply::clear_status() {
   status_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 GetReply::_internal_status() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 CommonReply::_internal_status() const {
   return status_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 GetReply::status() const {
-  // @@protoc_insertion_point(field_get:kvstore.GetReply.status)
+inline ::PROTOBUF_NAMESPACE_ID::int32 CommonReply::status() const {
+  // @@protoc_insertion_point(field_get:kvstore.CommonReply.status)
   return _internal_status();
 }
-inline void GetReply::_internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void CommonReply::_internal_set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
   status_ = value;
 }
-inline void GetReply::set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void CommonReply::set_status(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_status(value);
-  // @@protoc_insertion_point(field_set:kvstore.GetReply.status)
+  // @@protoc_insertion_point(field_set:kvstore.CommonReply.status)
 }
 
 // string errorDescription = 3;
-inline void GetReply::clear_errordescription() {
+inline void CommonReply::clear_errordescription() {
   errordescription_.ClearToEmpty();
 }
-inline const std::string& GetReply::errordescription() const {
-  // @@protoc_insertion_point(field_get:kvstore.GetReply.errorDescription)
+inline const std::string& CommonReply::errordescription() const {
+  // @@protoc_insertion_point(field_get:kvstore.CommonReply.errorDescription)
   return _internal_errordescription();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void GetReply::set_errordescription(ArgT0&& arg0, ArgT... args) {
+void CommonReply::set_errordescription(ArgT0&& arg0, ArgT... args) {
  
  errordescription_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:kvstore.GetReply.errorDescription)
+  // @@protoc_insertion_point(field_set:kvstore.CommonReply.errorDescription)
 }
-inline std::string* GetReply::mutable_errordescription() {
+inline std::string* CommonReply::mutable_errordescription() {
   std::string* _s = _internal_mutable_errordescription();
-  // @@protoc_insertion_point(field_mutable:kvstore.GetReply.errorDescription)
+  // @@protoc_insertion_point(field_mutable:kvstore.CommonReply.errorDescription)
   return _s;
 }
-inline const std::string& GetReply::_internal_errordescription() const {
+inline const std::string& CommonReply::_internal_errordescription() const {
   return errordescription_.Get();
 }
-inline void GetReply::_internal_set_errordescription(const std::string& value) {
+inline void CommonReply::_internal_set_errordescription(const std::string& value) {
   
   errordescription_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* GetReply::_internal_mutable_errordescription() {
+inline std::string* CommonReply::_internal_mutable_errordescription() {
   
   return errordescription_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* GetReply::release_errordescription() {
-  // @@protoc_insertion_point(field_release:kvstore.GetReply.errorDescription)
+inline std::string* CommonReply::release_errordescription() {
+  // @@protoc_insertion_point(field_release:kvstore.CommonReply.errorDescription)
   return errordescription_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void GetReply::set_allocated_errordescription(std::string* errordescription) {
+inline void CommonReply::set_allocated_errordescription(std::string* errordescription) {
   if (errordescription != nullptr) {
     
   } else {
@@ -1182,7 +1182,7 @@ inline void GetReply::set_allocated_errordescription(std::string* errordescripti
   }
   errordescription_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), errordescription,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:kvstore.GetReply.errorDescription)
+  // @@protoc_insertion_point(field_set_allocated:kvstore.CommonReply.errorDescription)
 }
 
 // -------------------------------------------------------------------

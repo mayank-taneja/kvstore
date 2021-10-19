@@ -5,9 +5,9 @@ package kvstore;
 // Defines the service
 service KVStore {
 
-rpc GET (GetRequest) returns (GetReply) {}
-rpc PUT (PutRequest) returns (PutReply) {}
-rpc DEL (DeleteRequest) returns (DeleteReply) {}
+rpc GET (GetRequest) returns (CommonReply) {}
+rpc PUT (PutRequest) returns (CommonReply) {}
+rpc DEL (DeleteRequest) returns (CommonReply) {}
 
 }
 
@@ -16,7 +16,7 @@ message GetRequest {
     string key =1;
 }
 
-message GetReply {
+message CommonReply {
     string value =1; 
     int32 status = 2;
     string errorDescription = 3;

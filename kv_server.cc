@@ -16,10 +16,12 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::ServerReaderWriter;
 using grpc::Status;
+using grpc::ServerCompletionQueue;
+using grpc::ServerAsyncResponseWriter;
 
 using kvstore::DeleteReply;
 using kvstore::DeleteRequest;
-using kvstore::GetReply;
+using kvstore::CommonReply;
 using kvstore::GetRequest;
 using kvstore::KVStore;
 using kvstore::PutReply;
@@ -185,83 +187,165 @@ int delete_key(string key)
     return 0;
 }
 
-class KVStoreServiceImpl final : public KVStore::Service
+class ServerImpl final
 {
 
-    Status GET(ServerContext *context,
-               const GetRequest *request, GetReply *response) override
-    {
-        string key = request->key();
-        cout << "Key = " << key;
-        string value = get_value_from_map(key);
-        if (value.compare("") == 0)
-        {
-            response->set_status(400);
-            response->set_errordescription("KEY NOT EXIST");
-        }
-        else
-        {
-            response->set_status(200);
-            response->set_value(value);
-            response->set_errordescription("RETRIEVED VALUE");
+    enum CallType { GET, DEL, PUT };
+    CallType type_;
 
-        }
+    public:
+  ~ServerImpl() {
+    server_->Shutdown();
+    cq_->Shutdown();
+  }
 
-        return Status::OK;
-    }
-
-    Status PUT(ServerContext *context,
-               const PutRequest *request, PutReply *response) override
-    {
-        string key = request->key();
-        string value = request->value();
-        put_value(key, value);
-        response->set_status(200);
-        response->set_errordescription("PUT SUCCESFULL");
-        return Status::OK;
-    }
-
-    Status DEL(ServerContext *context,
-               const DeleteRequest *request, DeleteReply *response) override
-    {
-        string key = request->key();
-        int value = delete_key(key);
-        if (value == 0)
-        {
-            response->set_status(400);
-            response->set_errordescription("KEY NOT EXIST");
-        }
-        else
-        {
-            response->set_status(200);
-            response->set_errordescription("KEY DELETED");
-
-        }
-
-        return Status::OK;
-    }
-};
-
-void RunServer()
-{
-
-    string address("0.0.0.0:5000");
-    KVStoreServiceImpl service;
+  void Run() {
+    std::string server_address("0.0.0.0:50051");
 
     ServerBuilder builder;
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    builder.RegisterService(&service_);
+    cq_ = builder.AddCompletionQueue();
+    server_ = builder.BuildAndStart();
+    std::cout << "Server listening on " << server_address << std::endl;
 
-    builder.AddListeningPort(address, grpc::InsecureServerCredentials());
-    builder.RegisterService(&service);
+    HandleRpcs();
+  }
 
-    unique_ptr<Server> server(builder.BuildAndStart());
-    cout << "Server listening on port: " << address << endl;
+  private:
+  class CallData {
+    
+   public:
+    CallData(KVStore::AsyncService* service, ServerCompletionQueue* cq, CallType ctype)
+        : service_(service), cq_(cq), responder_(&ctx_), status_(CREATE), type_(ctype) {
+      Proceed();
+    }
+    // CallData(KVStore::AsyncService* service, ServerCompletionQueue* cq, CallType ctype)
+    //     : service_(service), cq_(cq), putresponder_(&ctx_), status_(CREATE), type_(ctype) {
+    //   Proceed();
+    // }
 
-    server->Wait();
-}
+    void Proceed() {
+      if (status_ == CREATE) {
+        status_ = PROCESS;
 
-int main(int argc, char **argv)
-{
-    RunServer();
+        if(type_ == GET)
+            service_->RequestGET(&ctx_, &request_, &responder_, cq_, cq_,
+                                  this);
+        if(type_ == PUT)
+            service_->RequestPUT(&ctx_, &putrequest_, &responder_, cq_, cq_,
+                                  this);
 
-    return 0;
+        if(type_ == DEL)
+            service_->RequestDEL(&ctx_, &deleterequest_, &responder_, cq_, cq_,
+                                  this);
+      } else if (status_ == PROCESS) {
+
+        if(type_ == GET) {
+            new CallData(service_, cq_, GET);
+
+            string key = request_.key();
+            cout << "Key = " << key;
+            string value = get_value_from_map(key);
+            if (value.compare("") == 0)
+            {
+                reply_.set_status(400);
+                reply_.set_errordescription("KEY NOT EXIST");
+            }
+            else
+            {
+                reply_.set_status(200);
+                reply_.set_value(value);
+                reply_.set_errordescription("RETRIEVED VALUE");
+            }
+
+            status_ = FINISH;
+            responder_.Finish(reply_, Status::OK, this);
+        }
+        
+        else if(type_ == PUT) {
+            new CallData(service_, cq_, PUT);
+
+            string key = putrequest_.key();
+            string value = putrequest_.value();
+            put_value(key, value);
+            reply_.set_status(200);
+            reply_.set_errordescription("PUT SUCCESFULL");
+
+            status_ = FINISH;
+            responder_.Finish(reply_, Status::OK, this);
+        }
+
+        else if(type_ == DEL) {
+            new CallData(service_, cq_, DEL);
+
+            string key = deleterequest_.key();
+            int value = delete_key(key);
+            if (value == 0)
+            {
+                reply_.set_status(400);
+                reply_.set_errordescription("KEY NOT EXIST");
+            }
+            else
+            {
+                reply_.set_status(200);
+                reply_.set_errordescription("KEY DELETED");
+            }
+
+            status_ = FINISH;
+            responder_.Finish(reply_, Status::OK, this);
+        }
+
+        
+      } else {
+        GPR_ASSERT(status_ == FINISH);
+        delete this;
+      }
+    }
+
+    private:
+    KVStore::AsyncService* service_;
+    ServerCompletionQueue* cq_;
+    ServerContext ctx_;
+
+    GetRequest request_;
+    CommonReply reply_;
+
+    PutRequest putrequest_;
+    DeleteRequest deleterequest_;
+    //PutReply putreply_;
+
+    ServerAsyncResponseWriter<CommonReply> responder_;
+    //ServerAsyncResponseWriter<PutReply> putresponder_;
+
+    enum CallStatus { CREATE, PROCESS, FINISH };
+    CallStatus status_;  // The current serving state.
+    CallType type_;
+    
+  };
+
+  void HandleRpcs() {
+    //ServerImpl::CallType typex;
+    new CallData(&service_, cq_.get(), GET);
+    new CallData(&service_, cq_.get(), PUT);
+    new CallData(&service_, cq_.get(), DEL);
+    void* tag;  // uniquely identifies a request.
+    bool ok;
+    while (true) {
+      GPR_ASSERT(cq_->Next(&tag, &ok));
+      GPR_ASSERT(ok);
+      static_cast<CallData*>(tag)->Proceed();
+    }
+  }
+
+  std::unique_ptr<ServerCompletionQueue> cq_;
+  KVStore::AsyncService service_;
+  std::unique_ptr<Server> server_;
+};
+
+int main(int argc, char** argv) {
+  ServerImpl server;
+  server.Run();
+
+  return 0;
 }
