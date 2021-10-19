@@ -7,8 +7,7 @@
 
 #include "kvstore.grpc.pb.h"
 
-using grpc::ClientAsyncResponseReader;
-using grpc::CompletionQueue;
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
@@ -18,13 +17,11 @@ using kvstore::KVStore;
 using kvstore::GetRequest;
 using kvstore::CommonReply;
 using kvstore::PutRequest;
-using kvstore::PutReply;
 using kvstore::DeleteRequest;
-using kvstore::DeleteReply;
 
 class KVClient{
 public:
-	explicit KVClient(shared_ptr<Channel> channel) : stub_(KVStore::NewStub(channel)){}
+	KVClient(shared_ptr<Channel> channel) : stub_(KVStore::NewStub(channel)){}
 
 	void GET(string key) {
 		GetRequest request;
@@ -32,24 +29,8 @@ public:
 
 		CommonReply reply;
 		ClientContext context;
-		CompletionQueue cq;
-		Status status;
 
-
-		std::unique_ptr<ClientAsyncResponseReader<CommonReply> > rpc(
-        stub_->PrepareAsyncGET(&context, request, &cq));
-
-        rpc->StartCall();
-
-        rpc->Finish(&reply, &status, (void*)1);
-
-        void* got_tag;
-    	bool ok = false;
-    	GPR_ASSERT(cq.Next(&got_tag, &ok));
-    	GPR_ASSERT(got_tag == (void*)1);
-    	GPR_ASSERT(ok);
-
-		//Status status = stub_->GET(&context, request, &reply);
+		Status status = stub_->GET(&context, request, &reply);
 		cout<<"Value = "<< reply.value() << "Status = " << reply.status() << " error description = " << reply.errordescription(); 
 
 		if(status.ok()){
@@ -65,24 +46,8 @@ public:
 
 		CommonReply reply;
 		ClientContext context;
-		CompletionQueue cq;
-		Status status;
 
-
-		std::unique_ptr<ClientAsyncResponseReader<CommonReply> > rpc(
-        stub_->PrepareAsyncDEL(&context, request, &cq));
-
-        rpc->StartCall();
-
-        rpc->Finish(&reply, &status, (void*)1);
-
-        void* got_tag;
-    	bool ok = false;
-    	GPR_ASSERT(cq.Next(&got_tag, &ok));
-    	GPR_ASSERT(got_tag == (void*)1);
-    	GPR_ASSERT(ok);
-
-		//Status status = stub_->DEL(&context, request, &reply);
+		Status status = stub_->DEL(&context, request, &reply);
 
 		if(status.ok()){
 			cout << "Key deleted";
@@ -98,23 +63,8 @@ public:
 
 		CommonReply reply;
 		ClientContext context;
-		CompletionQueue cq;
-		Status status;
 
-		std::unique_ptr<ClientAsyncResponseReader<CommonReply> > rpc(
-        stub_->PrepareAsyncPUT(&context, request, &cq));
-
-        rpc->StartCall();
-
-        rpc->Finish(&reply, &status, (void*)1);
-
-        void* got_tag;
-    	bool ok = false;
-    	GPR_ASSERT(cq.Next(&got_tag, &ok));
-    	GPR_ASSERT(got_tag == (void*)1);
-    	GPR_ASSERT(ok);
-
-		//Status status = stub_->PUT(&context, request, &reply);
+		Status status = stub_->PUT(&context, request, &reply);
 
 		if(status.ok()){
 			cout << "Put successful";
@@ -198,4 +148,3 @@ int main(int argc, char* argv[]){
 	}
 	return 0;
 }
-
