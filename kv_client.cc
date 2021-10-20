@@ -30,13 +30,19 @@ public:
 		CommonReply reply;
 		ClientContext context;
 
+
 		Status status = stub_->GET(&context, request, &reply);
-		cout<<"Value = "<< reply.value() << "Status = " << reply.status() << " error description = " << reply.errordescription(); 
+
+		if(reply.status() == 200) {
+			cout<<"Value = "<< reply.value() << " Status = " << reply.status() << endl;
+		} else if(reply.status() == 400) {
+			cout<< "ERROR: "<< "Status = " << reply.status() << " error description = " << reply.errordescription() << endl;
+		} 
 
 		if(status.ok()){
-			cout << "Key get successfully";
+			//cout << "Key get successfully" << endl;
 		} else {
-			cout << "error in getting key";
+			cout << "Connection Error.." << endl;
 		}
 	}
 
@@ -49,10 +55,16 @@ public:
 
 		Status status = stub_->DEL(&context, request, &reply);
 
+		if(reply.status() == 200) {
+			cout<< "Key = " << key <<" deleted successfully " << "Status = " << reply.status() << endl;
+		} else if(reply.status() == 400) {
+			cout<< "ERROR: "<< "Status = " << reply.status() << " error description = " << reply.errordescription() << endl;
+		} 
+
 		if(status.ok()){
-			cout << "Key deleted";
+			//cout << "Key get successfully" << endl;
 		} else {
-			cout << "Error in deleting key";
+			cout << "Connection Error.." << endl;
 		}
 	}
 
@@ -66,10 +78,16 @@ public:
 
 		Status status = stub_->PUT(&context, request, &reply);
 
+		if(reply.status() == 200) {
+			cout<< "Key = " << key <<" Value = " << value << " put successfully " << "Status = " << reply.status() << endl;
+		} else if(reply.status() == 400) {
+			cout<< "ERROR in putting value"<< endl;
+		}
+
 		if(status.ok()){
-			cout << "Put successful";
+			//cout << "Key get successfully" << endl;
 		} else {
-			cout << "Put failed";
+			cout << "Connection Error.." << endl;
 		}
 	}
 
@@ -106,7 +124,10 @@ int main(int argc, char* argv[]){
 					a[i]=del.c_str();  
 					i++;
 				}
-				if(a[0].compare("GET")==0){
+				if(a[1].length() > 256) {
+					cout<< "KEY LENGTH CANNOT BE MORE THAN 256" << endl;
+				}
+				else if(a[0].compare("GET")==0){
 					client.GET(a[1]);    
 				}
 				else if(a[0].compare("PUT")==0){
@@ -129,16 +150,29 @@ int main(int argc, char* argv[]){
 			cin >> cmd;			
 			if(cmd.compare("GET")==0){
 				cin>>key;
-				client.GET(key);	
+				if(key.length() > 256) {
+					cout<< "KEY LENGTH CANNOT BE MORE THAN 256" << endl;
+				}
+				else {
+					client.GET(key);
+				}	
 			}
 			else if(cmd.compare("PUT")==0){
 				cin>>key;
 				cin>>value;
-				client.PUT(key,value);	
+				if(key.length() > 256) {
+					cout<< "KEY LENGTH CANNOT BE MORE THAN 256" << endl;
+				}
+				else
+					client.PUT(key,value);	
 			}
 			else if(cmd.compare("DEL")==0){
 				cin>>key;
-				client.DEL(key);	
+				if(key.length() > 256) {
+					cout<< "KEY LENGTH CANNOT BE MORE THAN 256" << endl;
+				}
+				else
+					client.DEL(key);	
 			}
 			else if(cmd.compare("EXIT")==0)
                 		break;

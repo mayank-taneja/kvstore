@@ -145,11 +145,11 @@ int delete_from_file(string key)
 {
 
     int i = hashString(key);
-    int offset = mdmap[i][key]; //call map function
     if (mdmap[i].find(key) == mdmap[i].end())
     {
         return -1;
     }
+    int offset = mdmap[i][key]; //call map function
     lseek(fd[i], offset, SEEK_SET);
     write(fd[i], "0", 1);
     delptr[i].push_front(offset);
@@ -196,6 +196,9 @@ string get_value(string key)
             {
                 logfs << "RETURN: NULL";
                 print_cache_in_log();
+
+                pthread_rwlock_unlock(&cacherwlock[key]);
+
                 return "";
             }
             if (cache.size() == CACHE_SIZE) // if cache is full
@@ -213,6 +216,9 @@ string get_value(string key)
             }
             logfs << "RETURN: " << value;
             print_cache_in_log();
+
+            pthread_rwlock_unlock(&cacherwlock[key]);
+
             return value;
         }
         else
@@ -224,6 +230,8 @@ string get_value(string key)
             lruqueue.push_front(key);
             logfs << "RETURN: " << cache[key] ;
             print_cache_in_log();
+
+            pthread_rwlock_unlock(&cacherwlock[key]);
 
             return cache[key];
         }
@@ -238,6 +246,8 @@ string get_value(string key)
             {
                 logfs << "RETURN: NULL" << endl;
                 print_cache_in_log();
+
+                pthread_rwlock_unlock(&cacherwlock[key]);
 
                 return "";
             }
@@ -267,6 +277,8 @@ string get_value(string key)
             logfs << "RETURN: " << value << endl;
             print_cache_in_log();
 
+            pthread_rwlock_unlock(&cacherwlock[key]);
+
             return value;
         }
         else
@@ -279,6 +291,8 @@ string get_value(string key)
             lfumap[key] = lfumap[key] + 1;
             logfs << "RETURN: " << cache[key] << endl;
             print_cache_in_log();
+
+            pthread_rwlock_unlock(&cacherwlock[key]);
 
             return cache[key];
         }
