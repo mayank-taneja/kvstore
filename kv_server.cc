@@ -206,7 +206,12 @@ class ServerImpl final
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service_);
     cq_ = builder.AddCompletionQueue();
+    grpc::ResourceQuota rq;
+    rq.SetMaxThreads(2);
+    builder.SetResourceQuota(rq);
+
     server_ = builder.BuildAndStart();
+
     std::cout << "Server listening on " << server_address << std::endl;
 
     HandleRpcs();
