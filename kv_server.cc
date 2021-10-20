@@ -4,13 +4,18 @@
 #include <vector>
 #include <string>
 #include <deque>
-
+#include <fcntl.h>
+#include <fstream>
+#include <cstring>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <unordered_map>
 using namespace std;
 
 #include <grpcpp/grpcpp.h>
-
 #include "kvstore.grpc.pb.h"
-
+#define files 20
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
@@ -19,19 +24,27 @@ using grpc::Status;
 using grpc::ServerCompletionQueue;
 using grpc::ServerAsyncResponseWriter;
 
-using kvstore::DeleteReply;
+
 using kvstore::DeleteRequest;
 using kvstore::CommonReply;
 using kvstore::GetRequest;
 using kvstore::KVStore;
-using kvstore::PutReply;
 using kvstore::PutRequest;
 
 unordered_map<string, string> cache;
-int cache_size = 3;
 deque<string> lruqueue;
 unordered_map<string, int> lfumap;
-string cache_type = "LRU";
+unordered_map<string, int> mdmap[20];
+deque<int> delptr[20];
+int fd[files];
+string filename[files] = {"0.txt", "1.txt", "2.txt", "3.txt", "4.txt", "5.txt", "6.txt", "7.txt", "8.txt", "9.txt", "10.txt", "11.txt", "12.txt", "13.txt", "14.txt", "15.txt", "16.txt", "17.txt", "18.txt", "19.txt"};
+
+fstream logfs;
+
+string LISTENING_PORT;
+string CACHE_REPLACEMENT_TYPE;
+int CACHE_SIZE;
+int THREAD_POOL_SIZE;
 
 int hashString(string s)
 {
@@ -43,78 +56,189 @@ int hashString(string s)
     return sum % 20;
 }
 
-string get_value_from_map(string key)
+void initmdmap(int fd[], int nof)
+{
+    for (int i = 0; i < nof; i++)
+    {
+        int filesize = lseek(fd[i], 0, SEEK_END);
+        lseek(fd[i], 0, SEEK_SET);
+        char buf[filesize];
+        read(fd[i], buf, sizeof(buf));
+        string str = buf;
+        for (int j = 0; j < filesize; j += 513)
+        {
+            if (str[j] == '1')
+            {
+                string key = str.substr(j + 1, 256);
+                mdmap[i][key] = j;
+            }
+            if (str[j] == '0')
+            {
+                delptr[i].push_front(j);
+            }
+        }
+    }
+}
+
+void put_in_file(string key, string value)
 {
 
-    if (cache_type.compare("LRU") == 0)
-    {
+    int i = hashString(key);
+    cout << i << endl;
+    int ptr;
 
-        if (cache.find(key) == cache.end())
-            return "";
+    if (mdmap[i].find(key) == mdmap[i].end())
+    {
+        if (delptr[i].empty())
+        {
+            ptr = lseek(fd[i], 0, SEEK_END);
+            write(fd[i], "1", 1);
+            write(fd[i], key.c_str(), 256);
+            write(fd[i], value.c_str(), 256);
+            mdmap[i][key] = ptr;
+        }
         else
         {
-            deque<string>::iterator iter = lruqueue.begin();
-            while (*iter != key)
-                iter++;
-            lruqueue.erase(iter);
-            lruqueue.push_front(key);
-            return cache[key];
+            ptr = delptr[i].front();
+            delptr[i].pop_front();
+            lseek(fd[i], ptr, SEEK_SET);
+            write(fd[i], "1", 1);
+            write(fd[i], key.c_str(), 256);
+            write(fd[i], value.c_str(), 256);
+            mdmap[i][key] = ptr;
         }
     }
-
-    if (cache_type.compare("LFU") == 0)
+    else
     {
-        if (cache.find(key) == cache.end())
-            return "";
-        else
-        {
-            deque<string>::iterator iter = lruqueue.begin();
-            while (*iter != key)
-                iter++;
-            lruqueue.erase(iter);
-            lruqueue.push_front(key);
-            lfumap[key] = lfumap[key] + 1;
-            return cache[key];
-        }
+        lseek(fd[i], mdmap[i][key] + 257, SEEK_SET);
+        write(fd[i], value.c_str(), 256);
+        cout << "alread present in store overwritten" << endl;
     }
+}
 
+string get_from_file(string key)
+{
+
+    int i = hashString(key);
+    if (mdmap[i].find(key) == mdmap[i].end())
+    {
+        return "";
+    }
+    int offset = mdmap[i][key]; //call map function
+    lseek(fd[i], offset, SEEK_SET);
+    char fkey[256], fvalue[256], fvalid[1];
+    read(fd[i], fvalid, 1);
+    read(fd[i], fkey, 256);
+    read(fd[i], fvalue, 256);
+    string fskey(fkey);
+    string fsvalue(fvalue);
+    if (key.compare(fskey) == 0)
+    {
+        return fsvalue;
+    }
     return "";
 }
 
-void put_value(string key, string value)
+int delete_from_file(string key)
 {
-    if (cache_type.compare("LRU") == 0)
+
+    int i = hashString(key);
+    int offset = mdmap[i][key]; //call map function
+    if (mdmap[i].find(key) == mdmap[i].end())
+    {
+        return -1;
+    }
+    lseek(fd[i], offset, SEEK_SET);
+    write(fd[i], "0", 1);
+    delptr[i].push_front(offset);
+    mdmap[i].erase(key);
+    return 1;
+}
+
+void initFD()
+{
+    for (int i = 0; i < files; i++)
+    {
+        fd[i] = open(filename[i].c_str(), O_CREAT | O_RDWR, S_IRWXU);
+        if (fd < 0)
+        {
+            cout << "Cannot open filename" << filename[i];
+        }
+    }
+    initmdmap(fd, files);
+    //################### Code For Locks ######################
+}
+
+void print_cache_in_log()
+{
+    logfs << endl << "CACHE CONTENTS::: ";
+    for (auto i : cache)
+        logfs << i.first << " ";
+    logfs << endl;
+}
+
+string get_value(string key)
+{
+
+    logfs << "REQUEST: GET "
+          << "PARAMETERS: " << key << " ";
+
+    if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
     {
 
-        if (cache.find(key) == cache.end()) // if key is not present in cache
+        if (cache.find(key) == cache.end()) // if key is not in cache
         {
-            if (cache_size == lruqueue.size()) //  if cache size is full pop the last entry of cache
+            string value = get_from_file(key);
+            if (value == "")
+            {
+                logfs << "RETURN: NULL";
+                print_cache_in_log();
+                return "";
+            }
+            if (cache.size() == CACHE_SIZE) // if cache is full
             {
                 string last = lruqueue.back();
                 lruqueue.pop_back();
                 cache.erase(last);
+                cache[key] = value;
+                lruqueue.push_front(key);
             }
+            else
+            {
+                lruqueue.push_front(key);
+                cache[key] = value;
+            }
+            logfs << "RETURN: " << value;
+            print_cache_in_log();
+            return value;
         }
-        else // else if key is in lru queue remove it and add it again in the front
+        else
         {
             deque<string>::iterator iter = lruqueue.begin();
             while (*iter != key)
                 iter++;
-
             lruqueue.erase(iter);
-            cache.erase(key);
-        }
+            lruqueue.push_front(key);
+            logfs << "RETURN: " << cache[key] ;
+            print_cache_in_log();
 
-        lruqueue.push_front(key);
-        cache[key] = value;
+            return cache[key];
+        }
     }
 
-    if (cache_type.compare("LFU") == 0)
+    if (CACHE_REPLACEMENT_TYPE.compare("LFU") == 0)
     {
-
-        if (cache.find(key) == cache.end()) // if key is not present in cache
+        if (cache.find(key) == cache.end()) // if key is not in cache
         {
-            if (cache_size == lruqueue.size()) //  if cache size is full pop the least frequent entry from cache
+            string value = get_from_file(key);
+            if (value == "")
+            {
+                logfs << "RETURN: NULL" << endl;
+                print_cache_in_log();
+
+                return "";
+            }
+            if (CACHE_SIZE == lruqueue.size()) //  if cache size is full pop the least frequent entry from cache
             {
                 int minfreq = 9999;
                 for (auto i : lfumap)
@@ -136,6 +260,91 @@ void put_value(string key, string value)
 
             lruqueue.push_front(key);
             cache[key] = value;
+            lfumap[key] = 1;
+            logfs << "RETURN: " << value << endl;
+            print_cache_in_log();
+
+            return value;
+        }
+        else
+        {
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+            lruqueue.erase(iter);
+            lruqueue.push_front(key);
+            lfumap[key] = lfumap[key] + 1;
+            logfs << "RETURN: " << cache[key] << endl;
+            print_cache_in_log();
+
+            return cache[key];
+        }
+    }
+
+    return "";
+}
+
+void put_value(string key, string value)
+{
+    logfs << "REQUEST: PUT "
+          << "PARAMETERS: " << key  <<"," << value << " ";
+    if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
+    {
+        // logfs << "a\n";
+
+        if (cache.find(key) == cache.end()) // if key is not present in cache
+        {
+            if (CACHE_SIZE == lruqueue.size()) //  if cache size is full pop the last entry of cache
+            {
+                string last = lruqueue.back();
+                lruqueue.pop_back();
+                cache.erase(last);
+            }
+        }
+        else // else if key is in lru queue remove it and add it again in the front
+        {
+            deque<string>::iterator iter = lruqueue.begin();
+            while (*iter != key)
+                iter++;
+
+            lruqueue.erase(iter);
+            cache.erase(key);
+        }
+
+        lruqueue.push_front(key);
+        cache[key] = value;
+        put_in_file(key, value);
+        logfs << "RESULT: PUT successful";
+    }
+
+    if (CACHE_REPLACEMENT_TYPE.compare("LFU") == 0)
+    {
+
+        if (cache.find(key) == cache.end()) // if key is not present in cache
+        {
+            if (CACHE_SIZE == lruqueue.size()) //  if cache size is full pop the least frequent entry from cache
+            {
+                int minfreq = 9999;
+                for (auto i : lfumap)
+                {
+                    if (i.second < minfreq)
+                        minfreq = i.second;
+                }
+                auto iter = lruqueue.rbegin();
+                for (; iter != lruqueue.rend(); ++iter)
+                    if (lfumap[*iter] == minfreq)
+                        break;
+                deque<string>::iterator it = lruqueue.begin();
+                while (*it != *iter)
+                    it++;
+                lruqueue.erase(it);
+                cache.erase(*iter);
+                lfumap.erase(*iter);
+            }
+
+            lruqueue.push_front(key);
+            cache[key] = value;
+            put_in_file(key, value);
             lfumap[key] = 0;
         }
         else // else if key is in cache increment frequency
@@ -147,17 +356,38 @@ void put_value(string key, string value)
             lruqueue.push_front(key);
 
             cache[key] = value;
+            put_in_file(key, value);
             lfumap[key] += 1;
         }
+        logfs << "RESULT: PUT successful" ;
     }
+    print_cache_in_log();
 }
 
 int delete_key(string key)
 {
-    if (cache_type.compare("LRU") == 0)
+    logfs << "REQUEST: DEL "
+          << "PARAMETER: " << key << " ";
+    if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
     {
         if (cache.find(key) == cache.end())
-            return 0;
+        {
+            int delstat = delete_from_file(key);
+            if (delstat == -1)
+            {
+                logfs << "RESULT: KEY NOT EXIST IN FILE" ;
+                print_cache_in_log();
+
+                return 0;
+            }
+            else
+            {
+                logfs << "RESULT: KEY DELETED IN FILE";
+                print_cache_in_log();
+
+                return 1;
+            }
+        }
         else
         {
             cache.erase(key);
@@ -165,14 +395,34 @@ int delete_key(string key)
             while (*it != key)
                 it++;
             lruqueue.erase(it);
+            delete_from_file(key);
+            logfs << "RESULT: DELETED FROM CACHE and FILE" ;
+            print_cache_in_log();
+
             return 1; // success
         }
     }
 
-    if (cache_type.compare("LFU") == 0)
+    if (CACHE_REPLACEMENT_TYPE.compare("LFU") == 0)
     {
         if (cache.find(key) == cache.end())
-            return 0;
+        {
+            int delstat = delete_from_file(key);
+            if (delstat == -1)
+            {
+                logfs << "RESULT: KEY NOT EXIST IN FILE";
+                print_cache_in_log();
+
+                return 0;
+            }
+            else
+            {
+                logfs << "RESULT: KEY DELETED IN FILE" ;
+                print_cache_in_log();
+
+                return 1;
+            }
+        }
         else
         {
             cache.erase(key);
@@ -181,8 +431,44 @@ int delete_key(string key)
                 iter++;
             lruqueue.erase(iter);
             lfumap.erase(key);
+            delete_from_file(key);
+            logfs << "RESULT: DELETED FROM CACHE and FILE" ;
+            print_cache_in_log();
+
             return 1; // success
         }
+    }
+
+    return 0;
+}
+
+
+int initialize()
+{
+    fstream newfile;
+    newfile.open("../../config.txt", ios::in);
+    if (newfile.is_open())
+    {
+        int i = 1;
+        string tp;
+        while (getline(newfile, tp))
+        {
+            if (i == 1)
+                LISTENING_PORT = tp;
+            else if (i == 2)
+                CACHE_REPLACEMENT_TYPE = tp;
+            else if (i == 3)
+                CACHE_SIZE = stoi(tp);
+            else if (i == 4)
+                THREAD_POOL_SIZE = stoi(tp);
+            i++;
+        }
+        cout << "INITIALIZING...." << endl;
+        cout << "LISTENING PORT: " << LISTENING_PORT << endl;
+        cout << "CACHE REPLACEMENT TYPE: " << CACHE_REPLACEMENT_TYPE << endl;
+        cout << "CACHE SIZE: " << CACHE_SIZE << endl;
+        cout << "Thread Pool Size: " << THREAD_POOL_SIZE << endl;
+        return 1;
     }
     return 0;
 }
@@ -251,7 +537,7 @@ class ServerImpl final
 
             string key = request_.key();
             cout << "Key = " << key;
-            string value = get_value_from_map(key);
+            string value = get_value(key);
             if (value.compare("") == 0)
             {
                 reply_.set_status(400);
@@ -349,8 +635,22 @@ class ServerImpl final
 };
 
 int main(int argc, char** argv) {
+
+  logfs.open("../../log.txt", ios::app | ios::in);
+
+  int t = initialize();
+    if (t == 0)
+    {
+        cout << "Cannot Open Config File" << endl;
+        return 0;
+    }
+    initFD();
+
   ServerImpl server;
   server.Run();
 
-  return 0;
+    logfs.close();
+
+    return 0;
 }
+
