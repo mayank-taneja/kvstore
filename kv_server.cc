@@ -182,6 +182,7 @@ string get_value(string key)
 
     logfs << "REQUEST: GET "
           << "PARAMETERS: " << key << " ";
+    pthread_rwlock_rdlock(&cacherwlock[key]);
 
     if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
     {
@@ -280,6 +281,8 @@ string get_value(string key)
             return cache[key];
         }
     }
+    pthread_rwlock_unlock(&cacherwlock[key]);
+
 
     return "";
 }
@@ -288,17 +291,24 @@ void put_value(string key, string value)
 {
     logfs << "REQUEST: PUT "
           << "PARAMETERS: " << key  <<"," << value << " ";
+    
+
     if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
     {
         // logfs << "a\n";
 
         if (cache.find(key) == cache.end()) // if key is not present in cache
         {
+            // cacherwlock[key]=(pthread_rwlock_t *)malloc(sizeof(pthread_rwlock_t));
+            pthread_rwlock_init(&cacherwlock[key],NULL);
+
             if (CACHE_SIZE == lruqueue.size()) //  if cache size is full pop the last entry of cache
             {
                 string last = lruqueue.back();
+                pthread_rwlock_wrlock(&(cacherwlock[last]));
                 lruqueue.pop_back();
                 cache.erase(last);
+                pthread_rwlock_unlock(&(cacherwlock[last]));
             }
         }
         else // else if key is in lru queue remove it and add it again in the front
@@ -306,13 +316,15 @@ void put_value(string key, string value)
             deque<string>::iterator iter = lruqueue.begin();
             while (*iter != key)
                 iter++;
-
+            pthread_rwlock_wrlock(&(cacherwlock[*iter])); 
             lruqueue.erase(iter);
             cache.erase(key);
+            pthread_rwlock_unlock(&(cacherwlock[*iter])); 
         }
-
+        pthread_rwlock_wrlock(&(cacherwlock[key]));
         lruqueue.push_front(key);
         cache[key] = value;
+        pthread_rwlock_unlock(&(cacherwlock[key]));
         put_in_file(key, value);
         logfs << "RESULT: PUT successful";
     }
@@ -322,6 +334,8 @@ void put_value(string key, string value)
 
         if (cache.find(key) == cache.end()) // if key is not present in cache
         {
+            // cacherwlock[key]=(pthread_rwlock_t *)malloc(sizeof(pthread_rwlock_t));
+            pthread_rwlock_init(&cacherwlock[key],NULL);
             if (CACHE_SIZE == lruqueue.size()) //  if cache size is full pop the least frequent entry from cache
             {
                 int minfreq = 9999;
@@ -337,27 +351,34 @@ void put_value(string key, string value)
                 deque<string>::iterator it = lruqueue.begin();
                 while (*it != *iter)
                     it++;
+                pthread_rwlock_wrlock(&(cacherwlock[*iter]));    
                 lruqueue.erase(it);
                 cache.erase(*iter);
                 lfumap.erase(*iter);
+                pthread_rwlock_unlock(&(cacherwlock[*iter]));
             }
 
+            pthread_rwlock_wrlock(&(cacherwlock[key]));
             lruqueue.push_front(key);
             cache[key] = value;
-            put_in_file(key, value);
             lfumap[key] = 0;
+            pthread_rwlock_unlock(&(cacherwlock[key]));
+            put_in_file(key, value);
+            
         }
         else // else if key is in cache increment frequency
         {
             deque<string>::iterator iter = lruqueue.begin();
             while (*iter != key)
                 iter++;
+            pthread_rwlock_wrlock(&(cacherwlock[key]));
             lruqueue.erase(iter);
-            lruqueue.push_front(key);
-
+            lruqueue.push_front(key);           
             cache[key] = value;
-            put_in_file(key, value);
             lfumap[key] += 1;
+            pthread_rwlock_unlock(&(cacherwlock[key]));
+            put_in_file(key, value);
+          
         }
         logfs << "RESULT: PUT successful" ;
     }
@@ -368,6 +389,7 @@ int delete_key(string key)
 {
     logfs << "REQUEST: DEL "
           << "PARAMETER: " << key << " ";
+
     if (CACHE_REPLACEMENT_TYPE.compare("LRU") == 0)
     {
         if (cache.find(key) == cache.end())
@@ -390,11 +412,13 @@ int delete_key(string key)
         }
         else
         {
+            pthread_rwlock_wrlock(&cacherwlock[key]);
             cache.erase(key);
             deque<string>::iterator it = lruqueue.begin();
             while (*it != key)
                 it++;
             lruqueue.erase(it);
+            pthread_rwlock_unlock(&cacherwlock[key]);
             delete_from_file(key);
             logfs << "RESULT: DELETED FROM CACHE and FILE" ;
             print_cache_in_log();
@@ -425,12 +449,14 @@ int delete_key(string key)
         }
         else
         {
+            pthread_rwlock_wrlock(&cacherwlock[key]);
             cache.erase(key);
             deque<string>::iterator iter = lruqueue.begin();
             while (*iter != key)
                 iter++;
-            lruqueue.erase(iter);
+            lruqueue.erase(iter); 
             lfumap.erase(key);
+            pthread_rwlock_unlock(&cacherwlock[key]);
             delete_from_file(key);
             logfs << "RESULT: DELETED FROM CACHE and FILE" ;
             print_cache_in_log();
@@ -438,9 +464,11 @@ int delete_key(string key)
             return 1; // success
         }
     }
-
+  
+    cacherwlock.erase(key);
     return 0;
 }
+
 
 
 int initialize()
@@ -653,4 +681,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
