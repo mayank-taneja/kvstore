@@ -94,7 +94,7 @@ void put_in_file(string key, string value)
     int i = hashString(key);
     cout << i << endl;
     int ptr;
-
+    pthread_rwlock_wrlock(&rwlock[i]);
     if (mdmap[i].find(key) == mdmap[i].end())
     {
         if (delptr[i].empty())
@@ -122,12 +122,14 @@ void put_in_file(string key, string value)
         write(fd[i], value.c_str(), 256);
         cout << "alread present in store overwritten" << endl;
     }
+    pthread_rwlock_unlock(&rwlock[i]);
 }
 
 string get_from_file(string key)
 {
 
     int i = hashString(key);
+    pthread_rwlock_rdlock(&rwlock[i]);
     if (mdmap[i].find(key) == mdmap[i].end())
     {
         return "";
@@ -138,6 +140,7 @@ string get_from_file(string key)
     read(fd[i], fvalid, 1);
     read(fd[i], fkey, 256);
     read(fd[i], fvalue, 256);
+    pthread_rwlock_unlock(&rwlock[i]);
     string fskey(fkey);
     string fsvalue(fvalue);
     if (key.compare(fskey) == 0)
@@ -151,6 +154,7 @@ int delete_from_file(string key)
 {
 
     int i = hashString(key);
+    pthread_rwlock_wrlock(&rwlock[i]);
     if (mdmap[i].find(key) == mdmap[i].end())
     {
         return -1;
@@ -160,6 +164,7 @@ int delete_from_file(string key)
     write(fd[i], "0", 1);
     delptr[i].push_front(offset);
     mdmap[i].erase(key);
+    pthread_rwlock_unlock(&rwlock[i]);
     return 1;
 }
 
@@ -172,6 +177,7 @@ void initFD()
         {
             cout << "Cannot open filename" << filename[i];
         }
+        pthread_rwlock_init(&rwlock[i],NULL);
     }
     initmdmap(fd, files);
     //################### Code For Locks ######################
