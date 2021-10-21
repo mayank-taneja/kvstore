@@ -72,9 +72,13 @@ void initmdmap(int fd[], int nof)
             if (buf[j] == '1')
             {
                 string key="";
-                for(int x=0;x<256;x++)
+                for(int x=1;x<=256;x++)
+                 {if (buf[j+x]=='\0')
+                    break;
                  key += buf[j+x];
-                mdmap[i][key] = j;  
+                 }
+                // cout << key << endl;
+                mdmap[i][key] = j;
             }
             if (buf[j] == '0')
             {
