@@ -66,15 +66,17 @@ void initmdmap(int fd[], int nof)
         lseek(fd[i], 0, SEEK_SET);
         char buf[filesize];
         read(fd[i], buf, sizeof(buf));
-        string str = buf;
+//         string str = buf;
         for (int j = 0; j < filesize; j += 513)
         {
-            if (str[j] == '1')
+            if (buf[j] == '1')
             {
-                string key = str.substr(j + 1, 256);
-                mdmap[i][key] = j;
+                string key="";
+                for(int x=0;x<256;x++)
+                 key += buf[j+x];
+                mdmap[i][key] = j;  
             }
-            if (str[j] == '0')
+            if (buf[j] == '0')
             {
                 delptr[i].push_front(j);
             }
