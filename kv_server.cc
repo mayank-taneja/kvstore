@@ -281,7 +281,7 @@ string get_value(string key)
             string value = get_from_file(key);      
             if (value == "")                    // key not exists in file
             {
-                logfs << "RETURN: NULL" << endl;
+                logfs << "RETURN: NULL";
                 print_cache_in_log();
                 return "";
             }
@@ -319,7 +319,7 @@ string get_value(string key)
 
             pthread_rwlock_unlock(&cacherwlock[key]);
 
-            logfs << "RETURN: " << value << endl;
+            logfs << "RETURN: " << value;
             print_cache_in_log();
 
             return value;
@@ -337,7 +337,7 @@ string get_value(string key)
             lfumap[key] = lfumap[key] + 1;
             pthread_rwlock_unlock(&cacherwlock[key]);
 
-            logfs << "RETURN: " << cache[key] << endl;
+            logfs << "RETURN: " << cache[key];
             print_cache_in_log();
 
             pthread_rwlock_rdlock(&cacherwlock[key]);
