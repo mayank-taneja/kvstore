@@ -1,3 +1,4 @@
+  
 #include <string>
 #include <cstdio>
 #include <fstream>
@@ -357,11 +358,12 @@ int main(int argc, char *argv[])
 		// {
 			fstream plot;
 			plot.open("../../plot.txt",ios::app);
-			for(int i=0;i<10;i++)
+			for(int i=0;i<30;i++)
 			{
 			mode = 2;
 			pthread_t id[num_threads];
 			long long int sum[num_threads];
+			long long int sum_times_all_threads = 0;
 			long long int maxtime = 0;
 			for (int i = 0; i < num_threads; i++)
 			{
@@ -377,13 +379,15 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < num_threads; i++)
 			{
 				cout << "Sum for thread id " << i << " = " << sum[i] << endl;
+				sum_times_all_threads += sum[i];
 				if (maxtime<sum[i])
 					maxtime=sum[i];
 			}
 
 			cout << "TOTAL SUM TEST MODE = " << maxtime << endl;
 			double rtime=double(maxtime/1000000.0);
-			plot << num_threads << " " << rtime << " " << 10000.0*num_threads/rtime << endl;
+			double respone_time = sum_times_all_threads/(50000*num_threads);	// Avg Response Time = (Total Time/Total Requests)
+			plot << num_threads << " " << respone_time << " " << 50000.0*num_threads/rtime << endl;  // Throughput = Reqests/Total Time
 			num_threads++;
 			}
 		// }
@@ -479,7 +483,6 @@ int main(int argc, char *argv[])
 				else if(a[0].compare("DEL")==0){
 					client.DEL(a[1]);    
 				}
-
 			}
 				cout << "Timing Statistics - " << endl << "========================================" << endl;
 				cout << "Total duration = " << sum_of_duration << " microseconds" << endl;
@@ -525,8 +528,6 @@ int main(int argc, char *argv[])
 			}
 			else if(cmd.compare("EXIT")==0)
                 		break;
-
-
 		}
 	}
 	return 0;*/
