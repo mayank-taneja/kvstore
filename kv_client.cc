@@ -26,6 +26,8 @@ long long int min_response_time = INT_MAX;
 long long int max_response_time = INT_MIN;
 int num_threads = 1;
 string LISTENING_PORT;
+fstream logfs;
+
 class KVClient
 {
 public:
@@ -194,6 +196,7 @@ void batchMode()
 		grpc::CreateChannel(
 			address,
 			grpc::InsecureChannelCredentials()));
+	logfs << "CLIENT CONNECTED TO SERVER" << endl;
 	mode = 1;
 	fstream newfile;
 	newfile.open(argv_global, ios::in);
@@ -256,6 +259,8 @@ void *multiBatchMode(void *vargp)
 		grpc::CreateChannel(
 			address,
 			grpc::InsecureChannelCredentials()));
+	logfs << "CLIENT CONNECTED TO SERVER" << endl;
+
 	fstream newfile;
 	newfile.open(argv_global, ios::in);
 	if (newfile.is_open())
@@ -322,6 +327,7 @@ int main(int argc, char *argv[])
 				grpc::InsecureChannelCredentials()
 				)
 	);*/
+    logfs.open("../../log.txt", ios::app | ios::in);
 
 	fstream config;
     config.open("../../config.txt", ios::in);
@@ -363,11 +369,11 @@ int main(int argc, char *argv[])
 			{
 				pthread_join(id[i], NULL);
 			}
-
+			maxtime=sum[1];
 			for (int i = 0; i < num_threads; i++)
 			{
 				cout << "Sum for thread id " << i << " = " << sum[i] << endl;
-				if (maxtime>sum[i])
+				if (maxtime<sum[i])
 					maxtime=sum[i];
 			}
 
@@ -381,6 +387,8 @@ int main(int argc, char *argv[])
 			grpc::CreateChannel(
 				address,
 				grpc::InsecureChannelCredentials()));
+	logfs << "CLIENT CONNECTED TO SERVER" << endl;
+
 		string cmd, key, value;
 		cout << "Interactive Mode : ";
 		while (1)
@@ -428,6 +436,8 @@ int main(int argc, char *argv[])
 				break;
 		}
 	}
+    logfs.close();
+
 	return 0;
 
 	/*if(argc > 1){
