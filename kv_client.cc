@@ -351,10 +351,14 @@ int main(int argc, char *argv[])
 	{
 		cout << "Batch Mode : " << argv[1] << endl;
 		argv_global = argv[1];
-		if (num_threads == 1)
-			batchMode();
-		else
-		{
+		// if (num_threads == 1)
+		// 	batchMode();
+		// else
+		// {
+			fstream plot;
+			plot.open("../../plot.txt",ios::app);
+			for(int i=0;i<10;i++)
+			{
 			mode = 2;
 			pthread_t id[num_threads];
 			long long int sum[num_threads];
@@ -369,7 +373,7 @@ int main(int argc, char *argv[])
 			{
 				pthread_join(id[i], NULL);
 			}
-			maxtime=sum[1];
+			maxtime=sum[0];
 			for (int i = 0; i < num_threads; i++)
 			{
 				cout << "Sum for thread id " << i << " = " << sum[i] << endl;
@@ -378,7 +382,11 @@ int main(int argc, char *argv[])
 			}
 
 			cout << "TOTAL SUM TEST MODE = " << maxtime << endl;
-		}
+			double rtime=double(maxtime/1000000.0);
+			plot << num_threads << " " << rtime << " " << 10000.0*num_threads/rtime << endl;
+			num_threads++;
+			}
+		// }
 	}
 	else
 	{
