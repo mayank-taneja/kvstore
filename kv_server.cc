@@ -462,7 +462,7 @@ int delete_key(string key)
             int delstat = delete_from_file(key);
             if (delstat == -1)
             {
-                logfs << "RESULT: KEY NOT EXIST IN FILE";
+                logfs << "RESULT: KEY NOT EXIST IN CACHE OR FILE";
                 print_cache_in_log();
 
                 return 0;
@@ -500,7 +500,7 @@ int delete_key(string key)
             int delstat = delete_from_file(key);
             if (delstat == -1)
             {
-                logfs << "RESULT: KEY NOT EXIST IN FILE";
+                logfs << "RESULT: KEY NOT EXIST IN CACHE OR FILE";
                 print_cache_in_log();
 
                 return 0;
@@ -560,6 +560,13 @@ int initialize()
         cout << "CACHE REPLACEMENT TYPE: " << CACHE_REPLACEMENT_TYPE << endl;
         cout << "CACHE SIZE: " << CACHE_SIZE << endl;
         cout << "Thread Pool Size: " << THREAD_POOL_SIZE << endl;
+
+        logfs << "INITIALIZING...." << endl;
+        logfs << "LISTENING PORT: " << LISTENING_PORT << endl;
+        logfs << "CACHE REPLACEMENT TYPE: " << CACHE_REPLACEMENT_TYPE << endl;
+        logfs << "CACHE SIZE: " << CACHE_SIZE << endl;
+        logfs << "Thread Pool Size: " << THREAD_POOL_SIZE << endl;
+
         return 1;
     }
     return 0;
@@ -597,6 +604,7 @@ public:
 
         server_ = builder.BuildAndStart();
 
+        logfs << "Server Started: listening on " << server_address << std::endl;
         std::cout << "Server listening on " << server_address << std::endl;
 
         HandleRpcs();
@@ -612,15 +620,13 @@ private:
         {
             Proceed();
         }
-        // CallData(KVStore::AsyncService* service, ServerCompletionQueue* cq, CallType ctype)
-        //     : service_(service), cq_(cq), putresponder_(&ctx_), status_(CREATE), type_(ctype) {
-        //   Proceed();
-        // }
-
+    
         void Proceed()
         {
             if (status_ == CREATE)
             {
+                //logfs << "New Connection Established With Client..." << endl;
+
                 status_ = PROCESS;
 
                 if (type_ == GET)
@@ -642,7 +648,6 @@ private:
                     new CallData(service_, cq_, GET);
 
                     string key = request_.key();
-                    // cout << "Key = " << key;
                     string value = get_value(key);
                     if (value.compare("") == 0)
                     {
@@ -653,7 +658,7 @@ private:
                     {
                         reply_.set_status(200);
                         reply_.set_value(value);
-                        reply_.set_errordescription("RETRIEVED VALUE");
+                        reply_.set_errordescription("GET SUCCESFULL");
                     }
 
                     status_ = FINISH;
@@ -709,13 +714,10 @@ private:
 
         GetRequest request_;
         CommonReply reply_;
-
         PutRequest putrequest_;
         DeleteRequest deleterequest_;
-        //PutReply putreply_;
 
         ServerAsyncResponseWriter<CommonReply> responder_;
-        //ServerAsyncResponseWriter<PutReply> putresponder_;
 
         enum CallStatus
         {
