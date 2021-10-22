@@ -92,7 +92,7 @@ void put_in_file(string key, string value)
 {
 
     int i = hashString(key);
-    cout << i << endl;
+    // cout << i << endl;
     int ptr;
     pthread_rwlock_wrlock(&rwlock[i]);
     if (mdmap[i].find(key) == mdmap[i].end())
