@@ -585,14 +585,14 @@ public:
 
     void Run()
     {
-        std::string server_address("0.0.0.0:50051");
+        std::string server_address= "0.0.0.0:"+LISTENING_PORT;
 
         ServerBuilder builder;
         builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
         builder.RegisterService(&service_);
         cq_ = builder.AddCompletionQueue();
         grpc::ResourceQuota rq;
-        rq.SetMaxThreads(2);
+        rq.SetMaxThreads(THREAD_POOL_SIZE);
         builder.SetResourceQuota(rq);
 
         server_ = builder.BuildAndStart();
