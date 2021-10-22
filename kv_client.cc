@@ -352,18 +352,18 @@ int main(int argc, char *argv[])
 	{
 		cout << "Batch Mode : " << argv[1] << endl;
 		argv_global = argv[1];
-		// if (num_threads == 1)
-		// 	batchMode();
-		// else
-		// {
-			fstream plot;
-			plot.open("../../plot.txt",ios::app);
-			for(int i=0;i<30;i++)
-			{
+		if (num_threads == 1)
+			batchMode();
+		else
+		{
+			// fstream plot;
+			// plot.open("../../plot.txt",ios::app);
+			// for(int i=0;i<30;i++)
+			// {
 			mode = 2;
 			pthread_t id[num_threads];
 			long long int sum[num_threads];
-			long long int sum_times_all_threads = 0;
+			// long long int sum_times_all_threads = 0;
 			long long int maxtime = 0;
 			for (int i = 0; i < num_threads; i++)
 			{
@@ -378,19 +378,19 @@ int main(int argc, char *argv[])
 			maxtime=sum[0];
 			for (int i = 0; i < num_threads; i++)
 			{
-				cout << "Sum for thread id " << i << " = " << sum[i] << endl;
-				sum_times_all_threads += sum[i];
+				// cout << "Sum for thread id " << i << " = " << sum[i] << endl;
+				// sum_times_all_threads += sum[i];
 				if (maxtime<sum[i])
 					maxtime=sum[i];
 			}
 
 			cout << "TOTAL SUM TEST MODE = " << maxtime << endl;
-			double rtime=double(maxtime/1000000.0);
-			double respone_time = sum_times_all_threads/(50000*num_threads);	// Avg Response Time = (Total Time/Total Requests)
-			plot << num_threads << " " << respone_time << " " << 50000.0*num_threads/rtime << endl;  // Throughput = Reqests/Total Time
-			num_threads++;
-			}
-		// }
+			// double rtime=double(maxtime/1000000.0);
+			// double respone_time = sum_times_all_threads/(10000*num_threads);	// Avg Response Time = (Total Time/Total Requests)
+			// plot << num_threads << " " << respone_time << " " << 10000.0*num_threads/rtime << endl;  // Throughput = Reqests/Total Time
+			// num_threads++;
+			// }
+		}
 	}
 	else
 	{
