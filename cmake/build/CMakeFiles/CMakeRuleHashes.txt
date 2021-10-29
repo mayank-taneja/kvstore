@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-aea4ba50c365f7d379e207749a446cb9 kvstore.pb.cc

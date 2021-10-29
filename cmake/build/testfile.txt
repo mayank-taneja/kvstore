@@ -1,5 +1,0 @@
-PUT abc 30
-PUT ccc 31
-GET abc
-DEL abc
-
