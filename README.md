@@ -1,7 +1,7 @@
 # kvstore
 To Build the code for the first time, run the following commands in the kvstore folder, so that the cmake folder and all dependencies get created -
-$ mkdir -p cmake/build
-$ pushd cmake/build
+$ mkdir -p cmake/build  
+$ pushd cmake/build    
 $ cmake -DCMAKE_PREFIX_PATH=$MY_INSTALL_DIR ../..
 $ make
 For later builds, just run the "make" command in the cmake/build directory inside kvstore folder
